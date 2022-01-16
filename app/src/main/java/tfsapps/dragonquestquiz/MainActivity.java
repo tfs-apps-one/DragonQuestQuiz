@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     private int db_quest3_rate = 0;         //DB
     private int db_random_rate = 0;         //DB
 
+    //  CSVファイル関連
+    private CsvReader csvreader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
         /* データベース */
         helper = new MyOpenHelper(this);
         AppDBInitRoad();
+
+        //CSVファイルの読込
+        ListData list;
+        csvreader = new CsvReader();
+        csvreader.reader(getApplicationContext());
+
+        //読込サンプル
+        ListData sample;
+        sample = csvreader.objects.get(1);
+        Toast.makeText(this, ""+sample.getQuestion(), Toast.LENGTH_SHORT).show();
 
         //音声初期化
         /*
@@ -255,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         if (ret == -1) {
             Toast.makeText(this, "Saving.... ERROR ", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Saving.... OK "+ "isopen="+db_isopen, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Saving.... OK "+ "isopen= "+db_isopen, Toast.LENGTH_SHORT).show();
         }
     }
 
