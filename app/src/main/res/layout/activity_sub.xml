@@ -88,7 +88,7 @@
             android:textStyle="bold"
             />
         <Button
-            android:id="@+id/text_answer2"
+            android:id="@+id/btn_answer2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -105,7 +105,7 @@
             android:textStyle="bold"
             />
         <Button
-            android:id="@+id/text_answer3"
+            android:id="@+id/btn_answer3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -123,7 +123,7 @@
             />
 
         <Button
-            android:id="@+id/text_answer4"
+            android:id="@+id/btn_answer4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -141,7 +141,7 @@
             />
 
         <Button
-            android:id="@+id/text_menu"
+            android:id="@+id/btn_menu"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"

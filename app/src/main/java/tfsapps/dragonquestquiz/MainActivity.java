@@ -9,7 +9,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_main);
         setScreenMain();
     }
-
+    /***********************************************
+        画面表示処理（メイン画面）
+    ***********************************************/
     /* メイン画面へ移動 */
     private void setScreenMain(){
         setContentView(R.layout.activity_main);
@@ -49,10 +55,41 @@ public class MainActivity extends AppCompatActivity {
 */
     }
 
+    /***********************************************
+        画面表示処理（サブ画面）
+    ***********************************************/
+    private void screenSubDisplay(){
+
+        /* ランダムな取得処理 */
+        ListData dispmsg;
+        dispmsg = csvreader.objects.get(1);
+
+        //ステータス
+        TextView status = (TextView) findViewById(R.id.text_status);
+        status.setText("Lv "+99+"　　ドラクエ "+dispmsg.getSeries()+"　　1/10");
+        //設問
+        TextView question = (TextView) findViewById(R.id.text_question);
+        question.setText(dispmsg.getQuestion());
+        //解答１
+        Button answer1 = (Button) findViewById(R.id.btn_answer1);
+        answer1.setText(dispmsg.getAnswer1());
+        //解答２
+        Button answer2 = (Button) findViewById(R.id.btn_answer2);
+        answer2.setText(dispmsg.getAnswer2());
+        //解答３
+        Button answer3 = (Button) findViewById(R.id.btn_answer3);
+        answer3.setText(dispmsg.getAnswer3());
+        //解答４
+        Button answer4 = (Button) findViewById(R.id.btn_answer4);
+        answer4.setText(dispmsg.getAnswer4());
+
+    }
 
     /* サブ画面へ移動 */
     private void setScreenSub(){
         setContentView(R.layout.activity_sub);
+
+        screenSubDisplay();
 /*
         Button returnButton = findViewById(R.id.return_button);
 //        returnButton.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***********************************************
-     各種ボタン処理（メイン画面）
-     ********************************************* */
+        各種ボタン処理（メイン画面）
+    ***********************************************/
     // ドラクエ１のクイズへ
     public void onQuiz1(View view){
         setScreenSub();
@@ -84,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***********************************************
-     各種ボタン処理（サブ画面）
-     ********************************************* */
+        各種ボタン処理（サブ画面）
+    ***********************************************/
     // 答１の解答
     public void onAnswer1(View view){
         setScreenMain();
@@ -108,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /* **************************************************
+    /***************************************************
         各種OS上の動作定義
     ****************************************************/
     @Override
@@ -126,9 +163,11 @@ public class MainActivity extends AppCompatActivity {
         csvreader.reader(getApplicationContext());
 
         //読込サンプル
+        /*  ランダムクラスでロードしてデータ抽出を行う
         ListData sample;
         sample = csvreader.objects.get(1);
         Toast.makeText(this, ""+sample.getQuestion(), Toast.LENGTH_SHORT).show();
+        */
 
         //音声初期化
         /*
@@ -170,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
          */
     }
 
-    /* **************************************************
+    /***************************************************
         DB初期ロードおよび設定
     ****************************************************/
     public void AppDBInitRoad() {
@@ -246,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* **************************************************
+    /***************************************************
         DB更新
     ****************************************************/
     public void AppDBUpdated() {
