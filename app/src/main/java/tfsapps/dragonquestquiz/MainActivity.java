@@ -1,6 +1,10 @@
 package tfsapps.dragonquestquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     //  CSVファイル関連
     private CsvReader csvreader;
+
+    //  現在表示中のクイズ情報
+    private ListData dispmsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private void screenSubDisplay(){
 
         /* ランダムな取得処理 */
-        ListData dispmsg;
         dispmsg = csvreader.objects.get(1);
 
         //ステータス
@@ -85,10 +91,86 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /***********************************************
+        解答画面（サブ画面）
+     ***********************************************/
+    private void screenSubAnswer(int select_answer){
+
+        TextView vtitle = new TextView(this);
+        TextView vmessage = new TextView(this);
+
+        int result = Integer.parseInt(dispmsg.getResult());
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        /*
+        switch (result){
+            case 1:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer1()+"\n\n\n");  break;
+            case 2:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer2()+"\n\n\n");  break;
+            case 3:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer3()+"\n\n\n");  break;
+            case 4:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer4()+"\n\n\n");  break;
+            default:    alert.setMessage("\n\n\n正解：" + "");                             break;
+        }
+        */
+        switch (result){
+            case 1:     vmessage.setText("\n 答え：\n\n  " + dispmsg.getAnswer1()+"\n\n\n");  break;
+            case 2:     vmessage.setText("\n 答え：\n\n  " + dispmsg.getAnswer2()+"\n\n\n");  break;
+            case 3:     vmessage.setText("\n 答え：\n\n  " + dispmsg.getAnswer3()+"\n\n\n");  break;
+            case 4:     vmessage.setText("\n 答え：\n\n  " + dispmsg.getAnswer4()+"\n\n\n");  break;
+            default:    vmessage.setText("\n 答え：\n\n  " + "");                             break;
+        }
+
+        //メッセージ
+        //vmessage.setTextColor(Color.WHITE);
+        //vmessage.setBackgroundColor(Color.BLACK);
+        vmessage.setTextSize(20);
+
+        //タイトル
+        vtitle.setBackgroundColor(Color.DKGRAY);
+        vtitle.setTextColor(Color.WHITE);
+        vtitle.setTextSize(48);
+        /* 正解の場合 */
+        if ( result == select_answer){
+            vtitle.setText("　正解");
+            //alert.setTitle("正解");
+            //alert.setIcon(R.id.ok);
+
+        }
+        /* 間違いの場合 */
+        else{
+            vtitle.setText("　間違い");
+            //alert.setTitle("間違い");
+            //alert.setIcon(R.id.ok);
+        }
+
+        alert.setCustomTitle(vtitle);
+        alert.setView(vmessage);
+        alert.setPositiveButton("次の問題へ", null );
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
+        /*  複数選択のダイアログ  リスト表示の処理
+        AlertDialog.Builder alert05 = new AlertDialog.Builder(this);
+        final CharSequence[] Items = { "00001", "00002", "00003"};
+        //ダイアログタイトルをセット
+        alert05.setTitle("ここにタイトルを設定");
+        // 表示項目とリスナの設定
+        alert05.setItems(Items, new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which) {
+                //リストを選択した時のみ
+                Toast.makeText(MainActivity.this, String.format("%s Selected", Items[which]), Toast.LENGTH_LONG).show();
+            }});
+        // back keyを使用不可に設定
+        alert05.setCancelable(false);
+        AlertDialog dialog = alert05.create();
+        dialog.show();
+         */
+    }
+
+
     /* サブ画面へ移動 */
     private void setScreenSub(){
         setContentView(R.layout.activity_sub);
-
         screenSubDisplay();
 /*
         Button returnButton = findViewById(R.id.return_button);
@@ -125,19 +207,23 @@ public class MainActivity extends AppCompatActivity {
     ***********************************************/
     // 答１の解答
     public void onAnswer1(View view){
-        setScreenMain();
+        screenSubAnswer(1);
+        //setScreenMain();
     }
     // 答２の解答
     public void onAnswer2(View view){
-        setScreenMain();
+        screenSubAnswer(2);
+        //setScreenMain();
     }
     // 答３の解答
     public void onAnswer3(View view){
-        setScreenMain();
+        screenSubAnswer(3);
+        //setScreenMain();
     }
     // 答４の解答
     public void onAnswer4(View view){
-        setScreenMain();
+        screenSubAnswer(4);
+        //setScreenMain();
     }
     // メイン画面へ
     public void onMenu(View view){
