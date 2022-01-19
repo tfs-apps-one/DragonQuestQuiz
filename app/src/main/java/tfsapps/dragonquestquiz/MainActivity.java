@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     //  現在表示中のクイズ情報
     private ListData dispmsg;
+    private QuizSearch quizSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,6 +248,9 @@ public class MainActivity extends AppCompatActivity {
         ListData list;
         csvreader = new CsvReader();
         csvreader.reader(getApplicationContext());
+
+        quizSearch = new QuizSearch(csvreader);
+
 
         //読込サンプル
         /*  ランダムクラスでロードしてデータ抽出を行う

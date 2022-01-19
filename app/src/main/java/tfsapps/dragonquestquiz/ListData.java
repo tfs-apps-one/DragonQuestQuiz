@@ -2,14 +2,15 @@ package tfsapps.dragonquestquiz;
 
 /* クイズのデータリスト */
 public class ListData {
-    String Series;          //シリーズ
-    String QuizLevel;       //問題レベル
-    String Question;        //設問
-    String Answer1;         //答１
-    String Answer2;         //答２
-    String Answer3;         //答３
-    String Answer4;         //答４
-    String Result;          //結果
+    public String Series;           //シリーズ
+    public String QuizLevel;        //問題レベル
+    public String Question;         //設問
+    public String Answer1;          //答１
+    public String Answer2;          //答２
+    public String Answer3;          //答３
+    public String Answer4;          //答４
+    public String Result;           //結果
+    public boolean isAlive;         //生死フラグ（検索専用）
 
     /*********************************************
         GET　処理
