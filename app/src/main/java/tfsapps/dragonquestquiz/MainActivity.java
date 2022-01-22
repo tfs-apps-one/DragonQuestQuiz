@@ -69,7 +69,16 @@ public class MainActivity extends AppCompatActivity {
     private void screenSubDisplay(){
 
         /* ランダムな取得処理 */
-        dispmsg = csvreader.objects.get(1);
+        dispmsg = quizSearch.QuizTableSearch();
+
+        if (dispmsg == null){
+            //とりあえずメイン画面へ遷移
+            quizSearch.QuizTableSearchReset();  //出題状態をリセット
+            setScreenMain();
+            return;
+        }
+
+        //dispmsg = csvreader.objects.get(1);
 
         //ステータス
         TextView status = (TextView) findViewById(R.id.text_status);
@@ -146,7 +155,14 @@ public class MainActivity extends AppCompatActivity {
 
         alert.setCustomTitle(vtitle);
         alert.setView(vmessage);
-        alert.setPositiveButton("次の問題へ", null );
+//        alert.setPositiveButton("次の問題へ", null );
+        alert.setPositiveButton("次の問題へ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 次の問題へ
+                setScreenSub();
+            }
+        });
         AlertDialog dialog = alert.create();
         dialog.show();
 
