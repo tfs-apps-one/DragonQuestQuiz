@@ -14,6 +14,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
     //  現在表示中のクイズ情報
     private ListData dispmsg;
     private QuizSearch quizSearch;
+    private int quizCount = 0;              //クイズの回数（何問目か？）
+    private int OkCount = 0;                //正解の回数
+    private int NgCount = 0;                //間違いの回数
+    final int QUIZMAX = 20;                 //クイズの最大値
+
+    //  画面パーツ
+    private ProgressBar prog1;              //
+    private ProgressBar prog2;              //
+    private ProgressBar prog3;              //
+    private ProgressBar prog4;              //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,42 @@ public class MainActivity extends AppCompatActivity {
     /* メイン画面へ移動 */
     private void setScreenMain(){
         setContentView(R.layout.activity_main);
+
+        /* テキスト（正解率）の表示 */
+        TextView result1 = (TextView) findViewById(R.id.text_result1);
+        result1.setText("正解率："+db_quest1_rate+"%");
+
+        TextView result2 = (TextView) findViewById(R.id.text_result2);
+        result2.setText("正解率："+db_quest2_rate+"%");
+
+        TextView result3 = (TextView) findViewById(R.id.text_result3);
+        result3.setText("正解率："+db_quest3_rate+"%");
+
+        TextView result4 = (TextView) findViewById(R.id.text_result4);
+        result4.setText("正解率："+db_random_rate+"%");
+
+        /* プログレスバーの表示 */
+        prog1 = (ProgressBar) findViewById(R.id.progress1);
+        prog1.setMin(0);
+        prog1.setMax(100);
+        prog1.setProgress(db_quest1_rate);
+
+        prog2 = (ProgressBar) findViewById(R.id.progress2);
+        prog2.setMin(0);
+        prog2.setMax(100);
+        prog2.setProgress(db_quest2_rate);
+
+        prog3 = (ProgressBar) findViewById(R.id.progress3);
+        prog3.setMin(0);
+        prog3.setMax(100);
+        prog3.setProgress(db_quest3_rate);
+
+        prog4 = (ProgressBar) findViewById(R.id.progress4);
+        prog4.setMin(0);
+        prog4.setMax(100);
+        prog4.setProgress(db_random_rate);
+
+
 /*
         Button sendButton = findViewById(R.id.send_button);
 //        sendButton.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +115,23 @@ public class MainActivity extends AppCompatActivity {
     ***********************************************/
     private void screenSubDisplay(){
 
+        /* 問題のカウントアップ */
+        quizCount++;
+
         /* ランダムな取得処理 */
         dispmsg = quizSearch.QuizTableSearch();
 
+        /*　全問終了　*/
         if (dispmsg == null){
+
+            //成績の更新
+            switch (Integer.parseInt(quizSearch.QuizNowListData().Series)){
+                case 1: db_quest1_rate = (OkCount*100/QUIZMAX); break;
+                case 2: db_quest2_rate = (OkCount*100/QUIZMAX); break;
+                case 3: db_quest3_rate = (OkCount*100/QUIZMAX); break;
+                case 4: db_random_rate = (OkCount+100/QUIZMAX); break;
+            }
+
             //とりあえずメイン画面へ遷移
             quizSearch.QuizTableSearchReset();  //出題状態をリセット
             setScreenMain();
@@ -81,8 +141,11 @@ public class MainActivity extends AppCompatActivity {
         //dispmsg = csvreader.objects.get(1);
 
         //ステータス
+        TextView title = (TextView) findViewById(R.id.text_title);
+        title.setText("Lv "+99+"　　ドラクエ："+dispmsg.getSeries()+"　　クイズ："+quizCount+"/"+QUIZMAX);
+        //ステータス
         TextView status = (TextView) findViewById(R.id.text_status);
-        status.setText("Lv "+99+"　　ドラクエ "+dispmsg.getSeries()+"　　1/10");
+        status.setText("正解:"+OkCount+"個　　間違い:"+NgCount+"個");
         //設問
         TextView question = (TextView) findViewById(R.id.text_question);
         question.setText(dispmsg.getQuestion());
@@ -141,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         vtitle.setTextSize(48);
         /* 正解の場合 */
         if ( result == select_answer){
+            OkCount++;
             vtitle.setText("　正解");
             //alert.setTitle("正解");
             //alert.setIcon(R.id.ok);
@@ -148,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         }
         /* 間違いの場合 */
         else{
+            NgCount++;
             vtitle.setText("　間違い");
             //alert.setTitle("間違い");
             //alert.setIcon(R.id.ok);
@@ -166,7 +231,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = alert.create();
         dialog.show();
 
-        /*  複数選択のダイアログ  リスト表示の処理
+        //  複数選択のダイアログ  リスト表示の処理
+        /*
         AlertDialog.Builder alert05 = new AlertDialog.Builder(this);
         final CharSequence[] Items = { "00001", "00002", "00003"};
         //ダイアログタイトルをセット
@@ -181,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         alert05.setCancelable(false);
         AlertDialog dialog = alert05.create();
         dialog.show();
-         */
+        */
     }
 
 
@@ -267,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
 
         quizSearch = new QuizSearch(csvreader);
 
+        setScreenMain();
 
         //読込サンプル
         /*  ランダムクラスでロードしてデータ抽出を行う

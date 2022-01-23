@@ -9,6 +9,9 @@ public class QuizSearch {
     private List<ListData> Quiz_List = new ArrayList<ListData>();
     private final Random rand = new Random(System.currentTimeMillis());
     static public ListData nowquiz;
+    static private int series_1;
+    static private int series_2;
+    static private int series_3;
 
     //コンストラクタ
     public QuizSearch(CsvReader csvreader) {
@@ -19,6 +22,15 @@ public class QuizSearch {
         for (i = 0; i < max; i++) {
             ListData temp = csvreader.objects.get(i);
             temp.isAlive = true;
+
+            //シリーズ毎の設問数
+            switch (Integer.parseInt(temp.Series)){
+                case 1: series_1++; break;
+                case 2: series_2++; break;
+                case 3: series_3++; break;
+                default:break;
+            }
+
             Quiz_List.add(temp);
         }
     }
@@ -80,6 +92,11 @@ public class QuizSearch {
     public int QuizTableMax()
     {
         return this.Quiz_List.size();
+    }
+
+    public ListData QuizNowListData()
+    {
+        return nowquiz;
     }
 
 }
