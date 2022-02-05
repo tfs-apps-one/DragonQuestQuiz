@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private int quizCount = 0;              //クイズの回数（何問目か？）
     private int OkCount = 0;                //正解の回数
     private int NgCount = 0;                //間違いの回数
-    final int QUIZMAX = 20;                 //クイズの最大値
+    final int QUIZMAX = 10;                 //クイズの最大値
+    private int quiz_index = 0;
 
     //  画面パーツ
     private ProgressBar prog1;              //
@@ -113,27 +114,38 @@ public class MainActivity extends AppCompatActivity {
     /***********************************************
         画面表示処理（サブ画面）
     ***********************************************/
+    private void screensubDispleyComplete(){
+        //成績の更新
+        switch (Integer.parseInt(quizSearch.QuizNowListData().QuizLevel)){
+            case 1: db_quest1_rate = (OkCount*100/QUIZMAX); break;
+            case 2: db_quest2_rate = (OkCount*100/QUIZMAX); break;
+            case 3: db_quest3_rate = (OkCount*100/QUIZMAX); break;
+            case 4: db_random_rate = (OkCount+100/QUIZMAX); break;
+        }
+
+        //とりあえずメイン画面へ遷移
+        quizSearch.QuizTableSearchReset();  //出題状態をリセット
+        quizCount = 0;
+        OkCount = 0;
+        NgCount = 0;
+    }
+
     private void screenSubDisplay(){
 
         /* 問題のカウントアップ */
         quizCount++;
 
         /* ランダムな取得処理 */
-        dispmsg = quizSearch.QuizTableSearch();
+        switch (quiz_index){
+            case 1: dispmsg = quizSearch.QuizTableSearch_1();   break;
+            case 2: dispmsg = quizSearch.QuizTableSearch_2();   break;
+            case 3: dispmsg = quizSearch.QuizTableSearch_3();   break;
+            case 4: dispmsg = quizSearch.QuizTableSearch_4();   break;
+        }
 
         /*　全問終了　*/
         if (dispmsg == null){
-
-            //成績の更新
-            switch (Integer.parseInt(quizSearch.QuizNowListData().Series)){
-                case 1: db_quest1_rate = (OkCount*100/QUIZMAX); break;
-                case 2: db_quest2_rate = (OkCount*100/QUIZMAX); break;
-                case 3: db_quest3_rate = (OkCount*100/QUIZMAX); break;
-                case 4: db_random_rate = (OkCount+100/QUIZMAX); break;
-            }
-
-            //とりあえずメイン画面へ遷移
-            quizSearch.QuizTableSearchReset();  //出題状態をリセット
+            screensubDispleyComplete();
             setScreenMain();
             return;
         }
@@ -274,16 +286,25 @@ public class MainActivity extends AppCompatActivity {
     ***********************************************/
     // ドラクエ１のクイズへ
     public void onQuiz1(View view){
+        quiz_index = 1;
         setScreenSub();
     }
     // ドラクエ２のクイズへ
     public void onQuiz2(View view){
+        quiz_index = 2;
         setScreenSub();
     }
     // ドラクエ３のクイズへ
     public void onQuiz3(View view){
+        quiz_index = 3;
         setScreenSub();
     }
+    // ドラクエ４のクイズへ
+    public void onQuiz4(View view){
+        quiz_index = 4;
+        setScreenSub();
+    }
+
 
     /***********************************************
         各種ボタン処理（サブ画面）
@@ -291,25 +312,22 @@ public class MainActivity extends AppCompatActivity {
     // 答１の解答
     public void onAnswer1(View view){
         screenSubAnswer(1);
-        //setScreenMain();
     }
     // 答２の解答
     public void onAnswer2(View view){
         screenSubAnswer(2);
-        //setScreenMain();
     }
     // 答３の解答
     public void onAnswer3(View view){
         screenSubAnswer(3);
-        //setScreenMain();
     }
     // 答４の解答
     public void onAnswer4(View view){
         screenSubAnswer(4);
-        //setScreenMain();
     }
     // メイン画面へ
     public void onMenu(View view){
+        screensubDispleyComplete();
         setScreenMain();
     }
 

@@ -48,7 +48,7 @@
             android:layout_marginEnd="5dp"
             android:gravity="center"
             android:textColor="@color/teal_700"
-            android:text="ドラクエ１〜３クイズ"
+            android:text="クイズ【ドラクエ１】"
             android:textStyle="bold"
             android:textSize="24dp"/>
     </LinearLayout>
@@ -77,7 +77,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz1"
-            android:text="ドラクエ１"
+            android:text="ストーリー編"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -134,7 +134,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz2"
-            android:text="ドラクエ２"
+            android:text="武器・呪文編"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -191,7 +191,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz3"
-            android:text="ドラクエ３"
+            android:text="モンスター編"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -247,8 +247,8 @@
             android:layout_marginBottom="10dp"
             android:layout_weight="4"
             android:background="@drawable/bak_1"
-            android:onClick="onQuiz3"
-            android:text="難問 ランダム"
+            android:onClick="onQuiz4"
+            android:text="竜王決戦"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
