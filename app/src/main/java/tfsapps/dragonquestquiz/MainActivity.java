@@ -206,33 +206,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //メッセージ
-        //vmessage.setTextColor(Color.WHITE);
-        //vmessage.setBackgroundColor(Color.BLACK);
+        vmessage.setBackgroundColor(Color.DKGRAY);
+        vmessage.setTextColor(Color.WHITE);
         vmessage.setTextSize(20);
 
         //タイトル
-        vtitle.setBackgroundColor(Color.DKGRAY);
-        vtitle.setTextColor(Color.WHITE);
-        vtitle.setTextSize(48);
+//        vtitle.setBackgroundColor(Color.DKGRAY);
+//        vtitle.setTextColor(Color.WHITE);
+//        vtitle.setTextSize(48);
         /* 正解の場合 */
         if ( result == select_answer){
             OkCount++;
-            vtitle.setText("　正解");
-            //alert.setTitle("正解");
-            //alert.setIcon(R.id.ok);
+//            vtitle.setText("　正解");
+            alert.setTitle("正解");
+            alert.setIcon(R.drawable.ok);
 
         }
         /* 間違いの場合 */
         else{
             NgCount++;
-            vtitle.setText("　間違い");
-            //alert.setTitle("間違い");
-            //alert.setIcon(R.id.ok);
+//            vtitle.setText("　間違い");
+            alert.setTitle("間違い");
+            alert.setIcon(R.drawable.ng);
         }
-
-        alert.setCustomTitle(vtitle);
+//        alert.setCustomTitle(vtitle);
         alert.setView(vmessage);
-//        alert.setPositiveButton("次の問題へ", null );
         alert.setPositiveButton("次の問題へ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -240,8 +238,8 @@ public class MainActivity extends AppCompatActivity {
                 setScreenSub();
             }
         });
-        AlertDialog dialog = alert.create();
-        dialog.show();
+        alert.create();
+        alert.show();
 
         //  複数選択のダイアログ  リスト表示の処理
         /*
@@ -266,8 +264,10 @@ public class MainActivity extends AppCompatActivity {
     /* サブ画面へ移動 */
     private void setScreenSub(){
         setContentView(R.layout.activity_sub);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
         screenSubDisplay();
-/*
+
+        /*
         Button returnButton = findViewById(R.id.return_button);
 //        returnButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
