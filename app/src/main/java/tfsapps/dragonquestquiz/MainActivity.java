@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /* テキスト（正解率）の表示 */
+        TextView title = (TextView) findViewById(R.id.text_title);
+        title.setText("クイズ【ドラクエ１】\n〜 勇者 Lv "+db_user_level+" 〜");
+
+        /* テキスト（正解率）の表示 */
         TextView result1 = (TextView) findViewById(R.id.text_result1);
         result1.setText("正解率："+db_quest1_rate+"%");
 
@@ -115,12 +119,59 @@ public class MainActivity extends AppCompatActivity {
         画面表示処理（サブ画面）
     ***********************************************/
     private void screensubDispleyComplete(){
-        //成績の更新
-        switch (Integer.parseInt(quizSearch.QuizNowListData().QuizLevel)){
-            case 1: db_quest1_rate = (OkCount*100/QUIZMAX); break;
-            case 2: db_quest2_rate = (OkCount*100/QUIZMAX); break;
-            case 3: db_quest3_rate = (OkCount*100/QUIZMAX); break;
-            case 4: db_random_rate = (OkCount+100/QUIZMAX); break;
+
+        int temp_rate;
+        int before_level;
+        int temp_level;
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+
+        //クイズを途中でスキップした場合は成績の更新はしない
+        if (quizCount >= QUIZMAX) {
+            temp_rate = (OkCount * 100 / QUIZMAX);
+
+            //成績の更新
+            switch (Integer.parseInt(quizSearch.QuizNowListData().QuizLevel)) {
+                case 1:
+                    if (db_quest1_rate <= temp_rate)    db_quest1_rate = temp_rate;
+                    break;
+                case 2:
+                    if (db_quest2_rate <= temp_rate)    db_quest2_rate = temp_rate;
+                    break;
+                case 3:
+                    if (db_quest3_rate <= temp_rate)    db_quest3_rate = temp_rate;
+                    break;
+                case 4:
+                    if (db_random_rate <= temp_rate)    db_random_rate = temp_rate;
+                    break;
+            }
+            //プレイヤーレベル更新処理
+            before_level = db_user_level;
+            temp_level = (db_quest1_rate+db_quest2_rate+db_quest3_rate+db_random_rate)/10;
+            if (temp_level <= 0) {
+                temp_level = 1;
+            }
+            if (db_user_level <= temp_level){
+                db_user_level = temp_level;
+
+                //ダイアログ
+                //メッセージ
+                vmessage.setText("\n\n 勇者はレベルアップしました\n  Lv "+before_level+" → "+db_user_level+"\n\n Lv20以上で竜王挑戦\n\n\n\n");
+                vmessage.setBackgroundColor(Color.DKGRAY);
+                vmessage.setTextColor(Color.WHITE);
+                vmessage.setTextSize(20);
+
+                guide.setTitle("Level UP");
+                guide.setIcon(R.drawable.lv);
+                guide.setView(vmessage);
+                guide.setPositiveButton("ＯＫ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                guide.create();
+                guide.show();
+            }
         }
 
         //とりあえずメイン画面へ遷移
@@ -154,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ステータス
         TextView title = (TextView) findViewById(R.id.text_title);
-        title.setText("Lv "+99+"　　ドラクエ："+dispmsg.getSeries()+"　　クイズ："+quizCount+"/"+QUIZMAX);
+        title.setText("Lv "+db_user_level+"　　ドラクエ："+dispmsg.getSeries()+"　　クイズ："+quizCount+"/"+QUIZMAX);
         //ステータス
         TextView status = (TextView) findViewById(R.id.text_status);
         status.setText("正解:"+OkCount+"個　　間違い:"+NgCount+"個");
