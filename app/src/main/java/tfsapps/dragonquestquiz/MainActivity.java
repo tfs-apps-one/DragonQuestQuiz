@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                 vmessage.setBackgroundColor(Color.DKGRAY);
                 vmessage.setTextColor(Color.WHITE);
                 vmessage.setTextSize(20);
-
                 guide.setTitle("Level UP");
                 guide.setIcon(R.drawable.lv);
                 guide.setView(vmessage);
@@ -352,8 +351,30 @@ public class MainActivity extends AppCompatActivity {
     }
     // ドラクエ４のクイズへ
     public void onQuiz4(View view){
-        quiz_index = 4;
-        setScreenSub();
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+
+        if (db_user_level < 20) {
+            //メッセージ
+            vmessage.setText("\n\n レベルが20以上必要です\n 現在 Lv "+db_user_level+"\n\n\n\n");
+            vmessage.setBackgroundColor(Color.DKGRAY);
+            vmessage.setTextColor(Color.WHITE);
+            vmessage.setTextSize(20);
+            guide.setTitle("勇者が未熟です");
+            guide.setIcon(R.drawable.ng);
+            guide.setView(vmessage);
+            guide.setPositiveButton("ＯＫ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            guide.create();
+            guide.show();
+        }
+        else{
+            quiz_index = 4;
+            setScreenSub();
+        }
     }
 
 
