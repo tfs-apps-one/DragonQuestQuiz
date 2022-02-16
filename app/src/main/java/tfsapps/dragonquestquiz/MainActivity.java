@@ -69,16 +69,16 @@ public class MainActivity extends AppCompatActivity {
 
         /* テキスト（正解率）の表示 */
         TextView result1 = (TextView) findViewById(R.id.text_result1);
-        result1.setText("正解率："+db_quest1_rate+"%");
+        result1.setText("経験値："+db_quest1_rate+"%");
 
         TextView result2 = (TextView) findViewById(R.id.text_result2);
-        result2.setText("正解率："+db_quest2_rate+"%");
+        result2.setText("経験値："+db_quest2_rate+"%");
 
         TextView result3 = (TextView) findViewById(R.id.text_result3);
-        result3.setText("正解率："+db_quest3_rate+"%");
+        result3.setText("経験値："+db_quest3_rate+"%");
 
         TextView result4 = (TextView) findViewById(R.id.text_result4);
-        result4.setText("正解率："+db_random_rate+"%");
+        result4.setText("ダメージ："+db_random_rate+"%");
 
         /* プログレスバーの表示 */
         prog1 = (ProgressBar) findViewById(R.id.progress1);
@@ -376,6 +376,47 @@ public class MainActivity extends AppCompatActivity {
             setScreenSub();
         }
     }
+    // 勇者ステータスのクイズへ
+    public void onStatus(View view){
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+
+        if (db_user_level < 5)
+            vmessage.setText("\n Lv "+db_user_level+"　称号：ひよっこ\n\n 〜装備〜\n 武器：たけのさお\n 鎧　：かわのふく\n 盾　：なし\n\n\n");
+        else if (db_user_level < 10){
+            vmessage.setText("\n Lv "+db_user_level+"　称号：かけだし\n\n 〜装備〜\n 武器：どうのつるぎ\n 鎧　：くさりかたびら\n 盾　：なし\n\n\n");
+        }
+        else if(db_user_level <20){
+            vmessage.setText("\n Lv "+db_user_level+"　称号：つわもの\n\n 〜装備〜\n 武器：はがねつるぎ\n 鎧　：てつのよろい\n 盾　：かわのたて\n\n\n");
+        }
+        else if(db_user_level < 29){
+            vmessage.setText("\n Lv "+db_user_level+" 称号：勇者\n\n 〜装備〜\n 武器：ほのおつるぎ\n 鎧　：まほうのよろい\n 盾　：てつのたて\n\n\n");
+        }
+        else{
+            vmessage.setText("\n Lv "+db_user_level+" 称号：伝説の勇者\n\n 〜装備〜\n 武器：ロトのつるぎ\n 鎧　：ロトのよろい\n 盾　：みかがみのたて\n\n\n");
+        }
+
+        //メッセージ
+        vmessage.setBackgroundColor(Color.DKGRAY);
+        vmessage.setTextColor(Color.WHITE);
+        vmessage.setTextSize(20);
+        guide.setTitle("勇者ステータス");
+        guide.setIcon(R.drawable.para);
+        guide.setView(vmessage);
+        guide.setPositiveButton("ＯＫ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        guide.create();
+        guide.show();
+    }
+    // はじめからプレイのクイズへ
+    public void onReset(View view){
+
+    }
+
+
 
 
     /***********************************************
