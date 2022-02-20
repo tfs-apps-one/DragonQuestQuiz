@@ -14,6 +14,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -329,6 +330,9 @@ public class MainActivity extends AppCompatActivity {
         int quiz_level;
         int boss_hp_bf = BOSSHP;
         int boss_hp_af = BOSSHP;
+
+        ImageView imageView = new ImageView( this );
+
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
 
@@ -387,18 +391,25 @@ public class MainActivity extends AppCompatActivity {
             }
             // ラスボスの処理
             else{
+                guide.setIcon(R.drawable.boss);
+                String mess;
                 if (boss_hp_af >= boss_hp_bf){
-                    vmessage.setText("\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n");
+                    mess = "\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n";
+//                  vmessage.setText("\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n");
+                    imageView.setImageResource(R.drawable.boss1);
                 }
                 else {
-                    vmessage.setText("\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n");
+                    mess = "\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n";
+//                  vmessage.setText("\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n");
+                    imageView.setImageResource(R.drawable.boss2);
                 }
                 vmessage.setBackgroundColor(Color.DKGRAY);
                 vmessage.setTextColor(Color.WHITE);
                 vmessage.setTextSize(16);
                 guide.setTitle("死闘結果");
-                guide.setIcon(R.drawable.lv);
-                guide.setView(vmessage);
+                guide.setView(imageView);
+                guide.setMessage(mess);
+//                guide.setView(vmessage);
                 guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
