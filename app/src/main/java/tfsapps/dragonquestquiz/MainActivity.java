@@ -440,15 +440,6 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        /*
-        switch (result){
-            case 1:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer1()+"\n\n\n");  break;
-            case 2:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer2()+"\n\n\n");  break;
-            case 3:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer3()+"\n\n\n");  break;
-            case 4:     alert.setMessage("\n\n\n正解：" + dispmsg.getAnswer4()+"\n\n\n");  break;
-            default:    alert.setMessage("\n\n\n正解：" + "");                             break;
-        }
-        */
         switch (result){
             case 1:     vmessage.setText("\n 答え：\n\n  " + dispmsg.getAnswer1()+"\n\n\n");  break;
             case 2:     vmessage.setText("\n 答え：\n\n  " + dispmsg.getAnswer2()+"\n\n\n");  break;
@@ -463,13 +454,9 @@ public class MainActivity extends AppCompatActivity {
         vmessage.setTextSize(20);
 
         //タイトル
-//        vtitle.setBackgroundColor(Color.DKGRAY);
-//        vtitle.setTextColor(Color.WHITE);
-//        vtitle.setTextSize(48);
         /* 正解の場合 */
         if ( result == select_answer){
             OkCount++;
-//            vtitle.setText("　正解");
             alert.setTitle("正解");
             alert.setIcon(R.drawable.ok);
 
@@ -477,11 +464,9 @@ public class MainActivity extends AppCompatActivity {
         /* 間違いの場合 */
         else{
             NgCount++;
-//            vtitle.setText("　間違い");
             alert.setTitle("間違い");
             alert.setIcon(R.drawable.ng);
         }
-//        alert.setCustomTitle(vtitle);
         alert.setView(vmessage);
         alert.setPositiveButton("次の問題へ", new DialogInterface.OnClickListener() {
             @Override
@@ -492,24 +477,6 @@ public class MainActivity extends AppCompatActivity {
         });
         alert.create();
         alert.show();
-
-        //  複数選択のダイアログ  リスト表示の処理
-        /*
-        AlertDialog.Builder alert05 = new AlertDialog.Builder(this);
-        final CharSequence[] Items = { "00001", "00002", "00003"};
-        //ダイアログタイトルをセット
-        alert05.setTitle("ここにタイトルを設定");
-        // 表示項目とリスナの設定
-        alert05.setItems(Items, new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                //リストを選択した時のみ
-                Toast.makeText(MainActivity.this, String.format("%s Selected", Items[which]), Toast.LENGTH_LONG).show();
-            }});
-        // back keyを使用不可に設定
-        alert05.setCancelable(false);
-        AlertDialog dialog = alert05.create();
-        dialog.show();
-        */
     }
 
 
@@ -518,19 +485,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sub);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         screenSubDisplay();
-
-        /*
-        Button returnButton = findViewById(R.id.return_button);
-//        returnButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                setScreenMain();
-//            }
-//        });
-        // lambda式
-        returnButton.setOnClickListener(v -> setScreenMain());
-
- */
     }
 
     /***********************************************
@@ -579,13 +533,6 @@ public class MainActivity extends AppCompatActivity {
         quizSearch = new QuizSearch(csvreader);
 
         setScreenMain();
-
-        //読込サンプル
-        /*  ランダムクラスでロードしてデータ抽出を行う
-        ListData sample;
-        sample = csvreader.objects.get(1);
-        Toast.makeText(this, ""+sample.getQuestion(), Toast.LENGTH_SHORT).show();
-        */
 
         //音声初期化
         /*
