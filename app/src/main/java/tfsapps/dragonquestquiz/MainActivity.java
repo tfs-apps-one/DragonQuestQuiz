@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private int OkCount = 0;                //正解の回数
     private int NgCount = 0;                //間違いの回数
     final int QUIZMAX = 10;                 //クイズの最大値
+    final int BOSSHP = 400;                 //竜王のＨＰ
     private int quiz_index = 0;
 
     //  画面パーツ
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         result3.setText("経験値："+db_quest3_rate+"%");
 
         TextView result4 = (TextView) findViewById(R.id.text_result4);
-        result4.setText("ダメージ："+db_random_rate+"%");
+        result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate));
 
         /* プログレスバーの表示 */
         prog1 = (ProgressBar) findViewById(R.id.progress1);
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
         prog4 = (ProgressBar) findViewById(R.id.progress4);
         prog4.setMin(0);
-        prog4.setMax(100);
+        prog4.setMax(BOSSHP);
         prog4.setProgress(db_random_rate);
 
 
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         guide.setTitle("ぼうけんの書");
         guide.setIcon(R.drawable.para);
         guide.setView(vmessage);
-        guide.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        guide.setPositiveButton("消去", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 db_user_level = 1;
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 setScreenMain();
             }
         });
-        guide.setNegativeButton("N O", new DialogInterface.OnClickListener() {
+        guide.setNegativeButton("中止", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -325,6 +326,9 @@ public class MainActivity extends AppCompatActivity {
         int temp_rate;
         int before_level;
         int temp_level;
+        int quiz_level;
+        int boss_hp_bf = BOSSHP;
+        int boss_hp_af = BOSSHP;
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
 
@@ -333,7 +337,8 @@ public class MainActivity extends AppCompatActivity {
             temp_rate = (OkCount * 100 / QUIZMAX);
 
             //成績の更新
-            switch (Integer.parseInt(quizSearch.QuizNowListData().QuizLevel)) {
+            quiz_level = Integer.parseInt(quizSearch.QuizNowListData().QuizLevel);
+            switch (quiz_level) {
                 case 1:
                     if (db_quest1_rate <= temp_rate)    db_quest1_rate = temp_rate;
                     break;
@@ -343,26 +348,55 @@ public class MainActivity extends AppCompatActivity {
                 case 3:
                     if (db_quest3_rate <= temp_rate)    db_quest3_rate = temp_rate;
                     break;
+                // ラスボスだけは別処理
                 case 4:
+                    boss_hp_bf -= db_random_rate;
                     if (db_random_rate <= temp_rate)    db_random_rate = temp_rate;
+                    boss_hp_af -= db_random_rate;
                     break;
             }
-            //プレイヤーレベル更新処理
-            before_level = db_user_level;
-            temp_level = (db_quest1_rate+db_quest2_rate+db_quest3_rate+db_random_rate)/10;
-            if (temp_level <= 0) {
-                temp_level = 1;
-            }
-            if (db_user_level <= temp_level){
-                db_user_level = temp_level;
 
-                //ダイアログ
-                //メッセージ
-                vmessage.setText("\n\n 勇者はレベルアップしました\n  Lv "+before_level+" → "+db_user_level+"\n\n Lv20以上で竜王挑戦\n\n\n\n");
+            //通常問題の処理
+            //プレイヤーレベル更新処理
+            if (quiz_level <= 3) {
+                before_level = db_user_level;
+                temp_level = (db_quest1_rate + db_quest2_rate + db_quest3_rate) / 10;
+                if (temp_level <= 0) {
+                    temp_level = 1;
+                }
+                if (db_user_level <= temp_level) {
+                    db_user_level = temp_level;
+
+                    //ダイアログ
+                    //メッセージ
+                    vmessage.setText("\n\n 勇者はレベルアップしました\n  Lv " + before_level + " → " + db_user_level + "\n\n Lv20以上で竜王挑戦\n\n\n\n");
+                    vmessage.setBackgroundColor(Color.DKGRAY);
+                    vmessage.setTextColor(Color.WHITE);
+                    vmessage.setTextSize(20);
+                    guide.setTitle("Level UP");
+                    guide.setIcon(R.drawable.lv);
+                    guide.setView(vmessage);
+                    guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    guide.create();
+                    guide.show();
+                }
+            }
+            // ラスボスの処理
+            else{
+                if (boss_hp_af >= boss_hp_bf){
+                    vmessage.setText("\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n");
+                }
+                else {
+                    vmessage.setText("\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n");
+                }
                 vmessage.setBackgroundColor(Color.DKGRAY);
                 vmessage.setTextColor(Color.WHITE);
-                vmessage.setTextSize(20);
-                guide.setTitle("Level UP");
+                vmessage.setTextSize(16);
+                guide.setTitle("死闘結果");
                 guide.setIcon(R.drawable.lv);
                 guide.setView(vmessage);
                 guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
