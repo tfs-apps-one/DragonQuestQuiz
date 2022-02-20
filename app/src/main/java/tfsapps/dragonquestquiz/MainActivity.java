@@ -56,6 +56,45 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_main);
         setScreenMain();
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //  DB更新
+        AppDBUpdated();
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        //  DB更新
+        AppDBUpdated();
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //  DB更新
+        AppDBUpdated();
+
+        /* 音量の戻しの処理 */
+        /*
+        if (am != null){
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, init_volume, 0);
+            am = null;
+        }
+         */
+    }
+
+
+/***************************************************************************************
+
+     サブ画面　処理
+
+***************************************************************************************/
+
     /***********************************************
         画面表示処理（メイン画面）
     ***********************************************/
@@ -116,8 +155,171 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***********************************************
-        画面表示処理（サブ画面）
+        各種ボタン処理（メイン画面）
     ***********************************************/
+    //
+    // ボタン　------> ドラクエ１のクイズへ
+    //
+    public void onQuiz1(View view){
+        quiz_index = 1;
+        setScreenSub();
+    }
+    //
+    // ボタン　------> ドラクエ２のクイズへ
+    //
+    public void onQuiz2(View view){
+        quiz_index = 2;
+        setScreenSub();
+    }
+    //
+    // ボタン　------> ドラクエ３のクイズへ
+    //
+    public void onQuiz3(View view){
+        quiz_index = 3;
+        setScreenSub();
+    }
+    //
+    // ボタン　------> ドラクエ４のクイズへ
+    //
+    public void onQuiz4(View view){
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+
+        if (db_user_level < 20) {
+            //メッセージ
+            vmessage.setText("\n\n レベルが20以上必要です\n 現在 Lv "+db_user_level+"\n\n\n\n");
+            vmessage.setBackgroundColor(Color.DKGRAY);
+            vmessage.setTextColor(Color.WHITE);
+            vmessage.setTextSize(20);
+            guide.setTitle("勇者が未熟です");
+            guide.setIcon(R.drawable.ng);
+            guide.setView(vmessage);
+            guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            guide.create();
+            guide.show();
+        }
+        else{
+            quiz_index = 4;
+            setScreenSub();
+        }
+    }
+    //
+    // ボタン　------> 勇者ステータスのクイズへ
+    //
+    public void onStatus(View view){
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+
+        if (db_user_level < 5)
+            vmessage.setText("\n Lv "+db_user_level+"　称号：ひよっこ\n\n 〜装備〜\n 武器：たけのさお\n 鎧　：かわのふく\n 盾　：なし\n\n\n");
+        else if (db_user_level < 10){
+            vmessage.setText("\n Lv "+db_user_level+"　称号：かけだし\n\n 〜装備〜\n 武器：どうのつるぎ\n 鎧　：くさりかたびら\n 盾　：なし\n\n\n");
+        }
+        else if(db_user_level <20){
+            vmessage.setText("\n Lv "+db_user_level+"　称号：つわもの\n\n 〜装備〜\n 武器：はがねつるぎ\n 鎧　：てつのよろい\n 盾　：かわのたて\n\n\n");
+        }
+        else if(db_user_level < 29){
+            vmessage.setText("\n Lv "+db_user_level+" 称号：勇者\n\n 〜装備〜\n 武器：ほのおつるぎ\n 鎧　：まほうのよろい\n 盾　：てつのたて\n\n\n");
+        }
+        else{
+            vmessage.setText("\n Lv "+db_user_level+" 称号：伝説の勇者\n\n 〜装備〜\n 武器：ロトのつるぎ\n 鎧　：ロトのよろい\n 盾　：みかがみのたて\n\n\n");
+        }
+
+        //メッセージ
+        vmessage.setBackgroundColor(Color.DKGRAY);
+        vmessage.setTextColor(Color.WHITE);
+        vmessage.setTextSize(16);
+        guide.setTitle("勇者ステータス");
+        guide.setIcon(R.drawable.para);
+        guide.setView(vmessage);
+        guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        guide.create();
+        guide.show();
+    }
+    //
+    // ボタン　------> はじめからプレイのクイズへ
+    //
+    public void dataResetDone(){
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+        //メッセージ
+        vmessage.setText("\n\n 本当に旅の記録を消去しますね？\n\n [消去] 本当に消去します\n [中止] 間違えたそのまま\n\n\n\n");
+        vmessage.setBackgroundColor(Color.DKGRAY);
+        vmessage.setTextColor(Color.WHITE);
+        vmessage.setTextSize(16);
+        guide.setTitle("ぼうけんの書");
+        guide.setIcon(R.drawable.para);
+        guide.setView(vmessage);
+        guide.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db_user_level = 1;
+                db_quest1_rate = 0;
+                db_quest2_rate = 0;
+                db_quest3_rate = 0;
+                db_random_rate = 0;
+                AppDBUpdated();
+                setScreenMain();
+            }
+        });
+        guide.setNegativeButton("N O", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        guide.create();
+        guide.show();
+    }
+
+
+    public void onReset(View view){
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+        //メッセージ
+        vmessage.setText("\n\n 旅の記録を消去してもいいですか？\n レベル、装備がすべて初期化されます\n\n [消去] 旅の記録を消去します\n [中止] 旅の記録はそのままです\n\n\n\n");
+        vmessage.setBackgroundColor(Color.DKGRAY);
+        vmessage.setTextColor(Color.WHITE);
+        vmessage.setTextSize(16);
+        guide.setTitle("ぼうけんの書");
+        guide.setIcon(R.drawable.para);
+        guide.setView(vmessage);
+        guide.setPositiveButton("消去", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dataResetDone();
+            }
+        });
+        guide.setNegativeButton("中止", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        guide.create();
+        guide.show();
+    }
+
+ /***************************************************************************************
+
+        サブ画面　処理
+
+ ***************************************************************************************/
+
+
+     /***********************************************
+     画面表示処理（サブ画面）
+     ***********************************************/
     private void screensubDispleyComplete(){
 
         int temp_rate;
@@ -163,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
                 guide.setTitle("Level UP");
                 guide.setIcon(R.drawable.lv);
                 guide.setView(vmessage);
-                guide.setPositiveButton("ＯＫ", new DialogInterface.OnClickListener() {
+                guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -227,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***********************************************
-        解答画面（サブ画面）
+     解答画面（サブ画面）
      ***********************************************/
     private void screenSubAnswer(int select_answer){
 
@@ -332,94 +534,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***********************************************
-        各種ボタン処理（メイン画面）
-    ***********************************************/
-    // ドラクエ１のクイズへ
-    public void onQuiz1(View view){
-        quiz_index = 1;
-        setScreenSub();
-    }
-    // ドラクエ２のクイズへ
-    public void onQuiz2(View view){
-        quiz_index = 2;
-        setScreenSub();
-    }
-    // ドラクエ３のクイズへ
-    public void onQuiz3(View view){
-        quiz_index = 3;
-        setScreenSub();
-    }
-    // ドラクエ４のクイズへ
-    public void onQuiz4(View view){
-        AlertDialog.Builder guide = new AlertDialog.Builder(this);
-        TextView vmessage = new TextView(this);
-
-        if (db_user_level < 20) {
-            //メッセージ
-            vmessage.setText("\n\n レベルが20以上必要です\n 現在 Lv "+db_user_level+"\n\n\n\n");
-            vmessage.setBackgroundColor(Color.DKGRAY);
-            vmessage.setTextColor(Color.WHITE);
-            vmessage.setTextSize(20);
-            guide.setTitle("勇者が未熟です");
-            guide.setIcon(R.drawable.ng);
-            guide.setView(vmessage);
-            guide.setPositiveButton("ＯＫ", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            guide.create();
-            guide.show();
-        }
-        else{
-            quiz_index = 4;
-            setScreenSub();
-        }
-    }
-    // 勇者ステータスのクイズへ
-    public void onStatus(View view){
-        AlertDialog.Builder guide = new AlertDialog.Builder(this);
-        TextView vmessage = new TextView(this);
-
-        if (db_user_level < 5)
-            vmessage.setText("\n Lv "+db_user_level+"　称号：ひよっこ\n\n 〜装備〜\n 武器：たけのさお\n 鎧　：かわのふく\n 盾　：なし\n\n\n");
-        else if (db_user_level < 10){
-            vmessage.setText("\n Lv "+db_user_level+"　称号：かけだし\n\n 〜装備〜\n 武器：どうのつるぎ\n 鎧　：くさりかたびら\n 盾　：なし\n\n\n");
-        }
-        else if(db_user_level <20){
-            vmessage.setText("\n Lv "+db_user_level+"　称号：つわもの\n\n 〜装備〜\n 武器：はがねつるぎ\n 鎧　：てつのよろい\n 盾　：かわのたて\n\n\n");
-        }
-        else if(db_user_level < 29){
-            vmessage.setText("\n Lv "+db_user_level+" 称号：勇者\n\n 〜装備〜\n 武器：ほのおつるぎ\n 鎧　：まほうのよろい\n 盾　：てつのたて\n\n\n");
-        }
-        else{
-            vmessage.setText("\n Lv "+db_user_level+" 称号：伝説の勇者\n\n 〜装備〜\n 武器：ロトのつるぎ\n 鎧　：ロトのよろい\n 盾　：みかがみのたて\n\n\n");
-        }
-
-        //メッセージ
-        vmessage.setBackgroundColor(Color.DKGRAY);
-        vmessage.setTextColor(Color.WHITE);
-        vmessage.setTextSize(20);
-        guide.setTitle("勇者ステータス");
-        guide.setIcon(R.drawable.para);
-        guide.setView(vmessage);
-        guide.setPositiveButton("ＯＫ", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        guide.create();
-        guide.show();
-    }
-    // はじめからプレイのクイズへ
-    public void onReset(View view){
-
-    }
-
-
-
-
-    /***********************************************
         各種ボタン処理（サブ画面）
     ***********************************************/
     // 答１の解答
@@ -478,37 +592,6 @@ public class MainActivity extends AppCompatActivity {
         if (am == null) {
             am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             init_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        }
-         */
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        //  DB更新
-        AppDBUpdated();
-    }
-    @Override
-    public void onStop(){
-        super.onStop();
-        //  DB更新
-        AppDBUpdated();
-    }
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        //  DB更新
-        AppDBUpdated();
-
-        /* 音量の戻しの処理 */
-        /*
-        if (am != null){
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, init_volume, 0);
-            am = null;
         }
          */
     }
