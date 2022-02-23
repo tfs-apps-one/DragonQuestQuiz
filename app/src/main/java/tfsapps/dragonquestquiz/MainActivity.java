@@ -651,7 +651,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /*　全問終了　*/
-        if (dispmsg == null){
+        if (dispmsg == null || quizCount > QUIZMAX){
             screensubDispleyComplete();
             setScreenMain();
             return;
