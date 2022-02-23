@@ -26,12 +26,17 @@ public class MainActivity extends AppCompatActivity {
     //  DB関連
     private MyOpenHelper helper;            //DBアクセス
     private int db_isopen = 0;              //DB使用したか
-    private int db_user_level = 0;          //DB
-    private int db_option_level = 0;        //DB
-    private int db_quest1_rate = 0;         //DB
-    private int db_quest2_rate = 0;         //DB
-    private int db_quest3_rate = 0;         //DB
-    private int db_random_rate = 0;         //DB
+    private int db_user_level = 0;          //DB勇者のレベル
+    private int db_option_level = 0;        //DBオプションレベル
+    private int db_quest1_rate = 0;         //DBクイズ１の正解率
+    private int db_quest2_rate = 0;         //DBクイズ２の正解率
+    private int db_quest3_rate = 0;         //DBクイズ３の正解率
+    private int db_random_rate = 0;         //DBボスのダメージ
+    private int db_fame = 0;                //DB名声
+    private int db_boss1 = 0;               //DBボス１を倒したか？
+    private int db_boss2 = 0;               //DBボス２を倒したか？
+    private int db_boss3 = 0;               //DBボス３を倒したか？
+    private int db_boss4 = 0;               //DBボス４を倒したか？
 
     //  CSVファイル関連
     private CsvReader csvreader;
@@ -43,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private int OkCount = 0;                //正解の回数
     private int NgCount = 0;                //間違いの回数
     final int QUIZMAX = 10;                 //クイズの最大値
-    final int BOSSHP = 400;                 //竜王のＨＰ
+    private int BOSSHP = 400;               //ボスのＨＰ
+    private int fame;                       //名声
+    final int BOSS_1_HP = 400;              //竜王のＨＰ
     private int quiz_index = 0;
 
     //  画面パーツ
@@ -102,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
     ***********************************************/
     /* メイン画面へ移動 */
     private void setScreenMain(){
+
+        if (db_boss1 <= 0){
+            BOSSHP = BOSS_1_HP;
+        }
+
         setContentView(R.layout.activity_main);
 
         /* テキスト（正解率）の表示 */
@@ -222,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             str += "\n";
             str += "　Lv " + db_user_level + "　称号：ひよっこ\n";
             str += "\n";
-            str += " 〜装備〜\n";
+            str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
             str += " 武器：たけのさお\n";
             str += " 鎧　：かわのふく\n";
             str += " 盾　：なし\n";
@@ -233,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             str += "\n";
             str += "　Lv " + db_user_level + "　称号：かけだし\n";
             str += "\n";
-            str += " 〜装備〜\n";
+            str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
             str += "　武器：どうのつるぎ\n";
             str += "　鎧　：くさりかたびら\n";
             str += "　盾　：なし\n";
@@ -244,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
             str += "\n";
             str += "　Lv " + db_user_level + "　称号：つわもの\n";
             str += "\n";
-            str += " 〜装備〜\n";
+            str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
             str += "　武器：はがねのつるぎ\n";
             str += "　鎧　：てつのよろい\n";
             str += "　盾　：かわのたて\n";
@@ -255,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
             str += "\n";
             str += "　Lv " + db_user_level + "　称号：勇者\n";
             str += "\n";
-            str += " 〜装備〜\n";
+            str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
             str += "　武器：ほのおのつるぎ\n";
             str += "　鎧　：まほうのよろい\n";
             str += "　盾　：てつのたて\n";
@@ -263,16 +275,72 @@ public class MainActivity extends AppCompatActivity {
             str += "　効果：特になし\n\n";
         }
         else{
-            str += "\n";
-            str += "　Lv " + db_user_level + "　称号：伝説の勇者\n";
-            str += "\n";
-            str += " 〜装備〜\n";
-            str += "　武器：ロトのつるぎ\n";
-            str += "　鎧　：ロトのよろい\n";
-            str += "　盾　：みかがみのたて\n";
-            str += "\n";
-            str += "　効果：BOSSへのダメージ1.5倍\n\n";
+            if (db_fame <= 10) {
+                str += "\n";
+                str += "　Lv " + db_user_level + "　称号：伝説の勇者\n";
+                str += "\n";
+                str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
+                str += "　武器：ロトのつるぎ\n";
+                str += "　鎧　：ロトのよろい\n";
+                str += "　盾　：みかがみのたて\n";
+                str += "\n";
+                str += "　効果：ボスダメージ1.5倍\n\n";
+            }
+            else if (db_fame <= 30) {
+                str += "\n";
+                str += "　Lv " + db_user_level + "　称号：伝説の勇者\n";
+                str += "\n";
+                str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
+                str += "　武器：ロトのつるぎ・改\n";
+                str += "　鎧　：ロトのよろい・改\n";
+                str += "　盾　：ロトのたて・改\n";
+                str += "\n";
+                str += "　効果：ボスダメージ1.6倍\n\n";
+            }
+            else if (db_fame <= 50) {
+                str += "\n";
+                str += "　Lv " + db_user_level + "　称号：伝説の勇者\n";
+                str += "\n";
+                str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
+                str += "　武器：ロトのつるぎ・真\n";
+                str += "　鎧　：ロトのよろい・真\n";
+                str += "　盾　：ロトのたて・真\n";
+                str += "\n";
+                str += "　効果：ボスダメージ1.8倍\n\n";
+            }
+            else if (db_fame <= 70) {
+                str += "\n";
+                str += "　Lv " + db_user_level + "　称号：伝説の勇者\n";
+                str += "\n";
+                str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
+                str += "　武器：ロトのつるぎ・神\n";
+                str += "　鎧　：ロトのよろい・神\n";
+                str += "　盾　：ロトのたて・神\n";
+                str += "\n";
+                str += "　効果：ボスダメージ2.0倍\n\n";
+            }
+            else if (db_fame <= 90) {
+                str += "\n";
+                str += "　Lv " + db_user_level + "　称号：極めし者\n";
+                str += "\n";
+                str += " 〜〜〜〜〜装備〜〜〜〜〜\n";
+                str += "　武器：ロトのつるぎ・極\n";
+                str += "　鎧　：ロトのよろい・極\n";
+                str += "　盾　：ロトのたて・極\n";
+                str += "\n";
+                str += "　効果：ボスダメージ5.0倍\n\n";
+            }
         }
+
+        //名声ポイント
+        //竜王を倒してから
+        if (db_boss1 > 0){
+            str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
+            str += "　名声："+ db_fame + "\n";
+            str += "　倒したボス： 竜王 \n\n";
+        }
+
+
         vmessage.setText(str);
 
         //メッセージ
@@ -384,8 +452,52 @@ public class MainActivity extends AppCompatActivity {
  ***************************************************************************************/
 
 
+    /***********************************************
+        画面表示処理（ボス討伐後）
+     ***********************************************/
+    public void boss_fight_result(){
+
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+        String str = "";
+
+        if (BOSSHP <= db_random_rate){
+            db_fame = 10;
+            db_boss1 = 1;
+            db_random_rate = 0;
+
+            //メッセージ
+            str += "\n\n";
+            str += " 勇者は竜王を倒した！！\n\n";
+            str += " 名声が [ "+ db_fame + " ] になりました\n\n";
+            str += " 名声を上げて\n";
+            str += " さらなる強敵に挑戦しよう\n";
+            str += " [ステータス]も確認してね\n\n\n";
+            vmessage.setText(str);
+
+            vmessage.setBackgroundColor(Color.DKGRAY);
+            vmessage.setTextColor(Color.WHITE);
+            vmessage.setTextSize(16);
+            guide.setTitle("討伐完了！！");
+            guide.setIcon(R.drawable.para);
+            guide.setView(vmessage);
+            guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AppDBUpdated();
+                    setScreenMain();
+                }
+            });
+            guide.create();
+            guide.show();
+        }
+        else{
+            setScreenMain();
+        }
+    }
+
      /***********************************************
-     画面表示処理（サブ画面）
+         画面表示処理（サブ画面）
      ***********************************************/
     private void screensubDispleyComplete(){
 
@@ -421,8 +533,14 @@ public class MainActivity extends AppCompatActivity {
                 // ラスボスだけは別処理
                 case 4:
                     boss_hp_bf -= db_random_rate;
-                    if (db_random_rate <= temp_rate)    db_random_rate = temp_rate;
+                    db_random_rate += temp_rate;
+                    //test
+                    db_random_rate += BOSS_1_HP;
                     boss_hp_af -= db_random_rate;
+                    // ＨＰがゼロ以下の処理
+                    if(boss_hp_af <= 0) {
+                        boss_hp_af = db_random_rate = BOSSHP;
+                    }
                     break;
             }
 
@@ -491,7 +609,7 @@ public class MainActivity extends AppCompatActivity {
                 guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setScreenMain();
+                        boss_fight_result();
                     }
                 });
                 guide.create();
@@ -653,8 +771,15 @@ public class MainActivity extends AppCompatActivity {
         ListData list;
         csvreader = new CsvReader();
         csvreader.reader(getApplicationContext());
-
         quizSearch = new QuizSearch(csvreader);
+
+        BOSSHP = BOSS_1_HP; //ボスのＨＰをセット
+
+        //test
+        db_user_level = 30;
+        db_quest1_rate = 100;
+        db_quest2_rate = 100;
+        db_quest3_rate = 100;
 
         setScreenMain();
 
@@ -711,16 +836,16 @@ public class MainActivity extends AppCompatActivity {
             insertValues.put("quest2_rate", 0);
             insertValues.put("quest3_rate", 0);
             insertValues.put("random_rate", 0);
+            insertValues.put("fame", 0);
+            insertValues.put("boss1", 0);
+            insertValues.put("boss2", 0);
+            insertValues.put("boss3", 0);
+            insertValues.put("boss4", 0);
             insertValues.put("data1", 0);
             insertValues.put("data2", 0);
             insertValues.put("data3", 0);
             insertValues.put("data4", 0);
             insertValues.put("data5", 0);
-            insertValues.put("data6", 0);
-            insertValues.put("data7", 0);
-            insertValues.put("data8", 0);
-            insertValues.put("data9", 0);
-            insertValues.put("data10", 0);
             try {
                 ret = db.insert("appinfo", null, insertValues);
             } finally {
@@ -756,6 +881,11 @@ public class MainActivity extends AppCompatActivity {
         insertValues.put("quest2_rate", db_quest2_rate);
         insertValues.put("quest3_rate", db_quest3_rate);
         insertValues.put("random_rate", db_random_rate);
+        insertValues.put("fame", db_fame);
+        insertValues.put("boss1", db_boss1);
+        insertValues.put("boss2", db_boss2);
+        insertValues.put("boss3", db_boss3);
+        insertValues.put("boss4", db_boss4);
         int ret;
         try {
             ret = db.update("appinfo", insertValues, null, null);

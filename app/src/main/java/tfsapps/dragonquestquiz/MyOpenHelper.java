@@ -21,16 +21,16 @@ public class MyOpenHelper extends SQLiteOpenHelper
                 + "quest2_rate integer,"        //ドラクエ２　正解率
                 + "quest3_rate integer,"        //ドラクエ３　正解率
                 + "random_rate integer,"        //ランダム　正解率
-                + "data1 integer,"
-                + "data2 integer,"
-                + "data3 integer,"
-                + "data4 integer,"
-                + "data5 integer,"
-                + "data6 integer,"
-                + "data7 integer,"
-                + "data8 integer,"
-                + "data9 integer,"
-                + "data10 integer);");
+                + "fame integer,"               //名声
+                + "boss1 integer,"              //ボス１
+                + "boss2 integer,"              //ボス２
+                + "boss3 integer,"              //ボス３
+                + "boss4 integer,"              //ボス４
+                + "data1 integer,"              //
+                + "data2 integer,"              //
+                + "data3 integer,"              //
+                + "data4 integer,"              //
+                + "data5 integer);");           //
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
