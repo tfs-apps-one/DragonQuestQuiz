@@ -212,24 +212,67 @@ public class MainActivity extends AppCompatActivity {
     //
     // ボタン　------> 勇者ステータスのクイズへ
     //
-    public void onStatus(View view){
+    public void onStatus(View view) {
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
+        String str = "";
 
-        if (db_user_level < 5)
-            vmessage.setText("\n Lv "+db_user_level+"　称号：ひよっこ\n\n 〜装備〜\n 武器：たけのさお\n 鎧　：かわのふく\n 盾　：なし\n\n\n");
+        if (db_user_level < 5){
+            str += "\n";
+            str += " Lv " + db_user_level + "　称号：ひよっこ\n";
+            str += "\n";
+            str += " 〜装備〜\n";
+            str += " 武器：たけのさお\n";
+            str += " 鎧　：かわのふく\n";
+            str += " 盾　：なし\n";
+            str += "\n";
+            str += " 効果：特になし\n\n";
+        }
         else if (db_user_level < 10){
-            vmessage.setText("\n Lv "+db_user_level+"　称号：かけだし\n\n 〜装備〜\n 武器：どうのつるぎ\n 鎧　：くさりかたびら\n 盾　：なし\n\n\n");
+            str += "\n";
+            str += " Lv " + db_user_level + "　称号：かけだし\n";
+            str += "\n";
+            str += " 〜装備〜\n";
+            str += " 武器：どうのつるぎ\n";
+            str += " 鎧　：くさりかたびら\n";
+            str += " 盾　：なし\n";
+            str += "\n";
+            str += " 効果：特になし\n\n";
         }
         else if(db_user_level <20){
-            vmessage.setText("\n Lv "+db_user_level+"　称号：つわもの\n\n 〜装備〜\n 武器：はがねつるぎ\n 鎧　：てつのよろい\n 盾　：かわのたて\n\n\n");
+            str += "\n";
+            str += " Lv " + db_user_level + "　称号：つわもの\n";
+            str += "\n";
+            str += " 〜装備〜\n";
+            str += " 武器：はがねのつるぎ\n";
+            str += " 鎧　：てつのよろい\n";
+            str += " 盾　：かわのたて\n";
+            str += "\n";
+            str += " 効果：特になし\n\n";
         }
         else if(db_user_level < 29){
-            vmessage.setText("\n Lv "+db_user_level+" 称号：勇者\n\n 〜装備〜\n 武器：ほのおつるぎ\n 鎧　：まほうのよろい\n 盾　：てつのたて\n\n\n");
+            str += "\n";
+            str += " Lv " + db_user_level + "　称号：勇者\n";
+            str += "\n";
+            str += " 〜装備〜\n";
+            str += " 武器：ほのおのつるぎ\n";
+            str += " 鎧　：まほうのよろい\n";
+            str += " 盾　：てつのたて\n";
+            str += "\n";
+            str += " 効果：特になし\n\n";
         }
         else{
-            vmessage.setText("\n Lv "+db_user_level+" 称号：伝説の勇者\n\n 〜装備〜\n 武器：ロトのつるぎ\n 鎧　：ロトのよろい\n 盾　：みかがみのたて\n\n\n");
+            str += "\n";
+            str += " Lv " + db_user_level + "　称号：伝説の勇者\n";
+            str += "\n";
+            str += " 〜装備〜\n";
+            str += " 武器：ロトのつるぎ\n";
+            str += " 鎧　：ロトのよろい\n";
+            str += " 盾　：みかがみのたて\n";
+            str += "\n";
+            str += " 効果：BOSSへのダメージ1.5倍\n\n";
         }
+        vmessage.setText(str);
 
         //メッセージ
         vmessage.setBackgroundColor(Color.DKGRAY);
@@ -308,6 +351,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        guide.create();
+        guide.show();
+    }
+    public void onTreasure(View view){
+        AlertDialog.Builder guide = new AlertDialog.Builder(this);
+        TextView vmessage = new TextView(this);
+        //メッセージ
+        vmessage.setText("\n\n ただいま準備中です・・・\n 今後の追加配信をご期待ください\n\n\n\n\n\n");
+        vmessage.setBackgroundColor(Color.DKGRAY);
+        vmessage.setTextColor(Color.WHITE);
+        vmessage.setTextSize(16);
+        guide.setTitle("準備中");
+        guide.setIcon(R.drawable.dq96x96);
+        guide.setView(vmessage);
+        guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
         guide.create();
         guide.show();
     }
