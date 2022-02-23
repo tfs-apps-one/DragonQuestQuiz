@@ -496,9 +496,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-     /***********************************************
-         画面表示処理（サブ画面）
+    /***********************************************
+     画面表示処理（ボス討伐後）
      ***********************************************/
+    public int  boss_damage_calcurate(int damage){
+        int result = damage;
+
+        // ロト装備で1.5倍
+        if (db_user_level >= 30){
+            result = damage * 150;
+            result /= 100;
+        }
+
+        return result;
+    }
+
+    /***********************************************
+        画面表示処理（サブ画面）
+    ***********************************************/
     private void screensubDispleyComplete(){
 
         int temp_rate;
@@ -533,9 +548,7 @@ public class MainActivity extends AppCompatActivity {
                 // ラスボスだけは別処理
                 case 4:
                     boss_hp_bf -= db_random_rate;
-                    db_random_rate += temp_rate;
-                    //test
-                    db_random_rate += BOSS_1_HP;
+                    db_random_rate += boss_damage_calcurate(temp_rate);
                     boss_hp_af -= db_random_rate;
                     // ＨＰがゼロ以下の処理
                     if(boss_hp_af <= 0) {
@@ -776,11 +789,12 @@ public class MainActivity extends AppCompatActivity {
         BOSSHP = BOSS_1_HP; //ボスのＨＰをセット
 
         //test
+        /*
         db_user_level = 30;
         db_quest1_rate = 100;
         db_quest2_rate = 100;
         db_quest3_rate = 100;
-
+        */
         setScreenMain();
 
         //音声初期化
