@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    setScreenMain();
                 }
             });
             guide.create();
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (db_user_level < 5){
             str += "\n";
-            str += " Lv " + db_user_level + "　称号：ひよっこ\n";
+            str += "　Lv " + db_user_level + "　称号：ひよっこ\n";
             str += "\n";
             str += " 〜装備〜\n";
             str += " 武器：たけのさお\n";
@@ -230,47 +231,47 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (db_user_level < 10){
             str += "\n";
-            str += " Lv " + db_user_level + "　称号：かけだし\n";
+            str += "　Lv " + db_user_level + "　称号：かけだし\n";
             str += "\n";
             str += " 〜装備〜\n";
-            str += " 武器：どうのつるぎ\n";
-            str += " 鎧　：くさりかたびら\n";
-            str += " 盾　：なし\n";
+            str += "　武器：どうのつるぎ\n";
+            str += "　鎧　：くさりかたびら\n";
+            str += "　盾　：なし\n";
             str += "\n";
-            str += " 効果：特になし\n\n";
+            str += "　効果：特になし\n\n";
         }
         else if(db_user_level <20){
             str += "\n";
-            str += " Lv " + db_user_level + "　称号：つわもの\n";
+            str += "　Lv " + db_user_level + "　称号：つわもの\n";
             str += "\n";
             str += " 〜装備〜\n";
-            str += " 武器：はがねのつるぎ\n";
-            str += " 鎧　：てつのよろい\n";
-            str += " 盾　：かわのたて\n";
+            str += "　武器：はがねのつるぎ\n";
+            str += "　鎧　：てつのよろい\n";
+            str += "　盾　：かわのたて\n";
             str += "\n";
-            str += " 効果：特になし\n\n";
+            str += "　効果：特になし\n\n";
         }
         else if(db_user_level < 29){
             str += "\n";
-            str += " Lv " + db_user_level + "　称号：勇者\n";
+            str += "　Lv " + db_user_level + "　称号：勇者\n";
             str += "\n";
             str += " 〜装備〜\n";
-            str += " 武器：ほのおのつるぎ\n";
-            str += " 鎧　：まほうのよろい\n";
-            str += " 盾　：てつのたて\n";
+            str += "　武器：ほのおのつるぎ\n";
+            str += "　鎧　：まほうのよろい\n";
+            str += "　盾　：てつのたて\n";
             str += "\n";
-            str += " 効果：特になし\n\n";
+            str += "　効果：特になし\n\n";
         }
         else{
             str += "\n";
-            str += " Lv " + db_user_level + "　称号：伝説の勇者\n";
+            str += "　Lv " + db_user_level + "　称号：伝説の勇者\n";
             str += "\n";
             str += " 〜装備〜\n";
-            str += " 武器：ロトのつるぎ\n";
-            str += " 鎧　：ロトのよろい\n";
-            str += " 盾　：みかがみのたて\n";
+            str += "　武器：ロトのつるぎ\n";
+            str += "　鎧　：ロトのよろい\n";
+            str += "　盾　：みかがみのたて\n";
             str += "\n";
-            str += " 効果：BOSSへのダメージ1.5倍\n\n";
+            str += "　効果：BOSSへのダメージ1.5倍\n\n";
         }
         vmessage.setText(str);
 
@@ -284,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
         guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                setScreenMain();
             }
         });
         guide.create();
@@ -318,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         guide.setNegativeButton("中止", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                setScreenMain();
             }
         });
 
@@ -347,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
         guide.setNegativeButton("中止", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                setScreenMain();
             }
         });
 
@@ -358,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
         //メッセージ
-        vmessage.setText("\n\n ただいま準備中です・・・\n 今後の追加配信をご期待ください\n\n\n\n\n\n");
+        vmessage.setText("\n\n ただいま準備中です・・・\n\n 今後の追加配信をご期待ください\n\n\n\n\n\n");
         vmessage.setBackgroundColor(Color.DKGRAY);
         vmessage.setTextColor(Color.WHITE);
         vmessage.setTextSize(16);
@@ -368,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
         guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                setScreenMain();
             }
         });
         guide.create();
@@ -392,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
         int quiz_level;
         int boss_hp_bf = BOSSHP;
         int boss_hp_af = BOSSHP;
+        String mess = "";
 
         ImageView imageView = new ImageView( this );
 
@@ -435,16 +439,17 @@ public class MainActivity extends AppCompatActivity {
 
                     //ダイアログ
                     //メッセージ
-                    vmessage.setText("\n\n 勇者はレベルアップしました\n  Lv " + before_level + " → " + db_user_level + "\n\n Lv20以上で竜王挑戦\n\n\n\n");
+                    vmessage.setText("\n\n 勇者はレベルアップしました\n  Lv " + before_level + " → " + db_user_level + "\n\n Lv20以上で竜王挑戦\n\n「ステータス」チェックしてね\n\n");
                     vmessage.setBackgroundColor(Color.DKGRAY);
                     vmessage.setTextColor(Color.WHITE);
-                    vmessage.setTextSize(20);
+                    vmessage.setTextSize(16);
                     guide.setTitle("Level UP");
                     guide.setIcon(R.drawable.lv);
                     guide.setView(vmessage);
                     guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            setScreenMain();
                         }
                     });
                     guide.create();
@@ -454,14 +459,25 @@ public class MainActivity extends AppCompatActivity {
             // ラスボスの処理
             else{
                 guide.setIcon(R.drawable.boss);
-                String mess;
                 if (boss_hp_af >= boss_hp_bf){
-                    mess = "\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n";
+                    mess += "\n\n";
+                    mess += " 勇者の一撃は竜王に回避された!!\n";
+                    mess += "\n";
+                    mess += "竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
+                    mess += "\n\n";
+                    mess += "　(残ＨＰ→ゼロ　ゲームクリア）\n";
+                    mess += "\n\n";
 //                  vmessage.setText("\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n");
                     imageView.setImageResource(R.drawable.boss1);
                 }
                 else {
-                    mess = "\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n";
+                    mess += "\n\n";
+                    mess += " 勇者の一撃が竜王に直撃した!!\n";
+                    mess += "\n";
+                    mess += "竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
+                    mess += "\n\n";
+                    mess += "　(残ＨＰ→ゼロ　ゲームクリア）\n";
+                    mess += "\n\n";
 //                  vmessage.setText("\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n");
                     imageView.setImageResource(R.drawable.boss2);
                 }
@@ -475,6 +491,7 @@ public class MainActivity extends AppCompatActivity {
                 guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        setScreenMain();
                     }
                 });
                 guide.create();
