@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaParser;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 
@@ -59,10 +62,29 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar prog3;              //
     private ProgressBar prog4;              //
 
+    //  音源
+    private AudioManager am;
+    private int start_volume;
+    private MediaPlayer bgm_menu;
+    private MediaPlayer bgm_battle;
+    private MediaPlayer bgm_boss;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
+
+        //音声初期化
+        if (am == null) {
+            am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            start_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+            bgm_menu = (MediaPlayer) MediaPlayer.create(this, R.raw.menu);
+            bgm_battle = (MediaPlayer) MediaPlayer.create(this, R.raw.battle);
+            bgm_boss = (MediaPlayer) MediaPlayer.create(this, R.raw.boss);
+        }
+
         setScreenMain();
     }
     @Override
@@ -89,12 +111,15 @@ public class MainActivity extends AppCompatActivity {
         AppDBUpdated();
 
         /* 音量の戻しの処理 */
-        /*
         if (am != null){
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, init_volume, 0);
+
+            bgm_menu.release();        bgm_menu = null;
+            bgm_battle.release();      bgm_battle = null;
+            bgm_boss.release();        bgm_boss = null;
+
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, start_volume, 0);
             am = null;
         }
-         */
     }
 
 
@@ -109,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
     ***********************************************/
     /* メイン画面へ移動 */
     private void setScreenMain(){
+
+        BgmStart(1);
 
         if (db_boss1 <= 0){
             BOSSHP = BOSS_1_HP;
@@ -644,10 +671,10 @@ public class MainActivity extends AppCompatActivity {
 
         /* ランダムな取得処理 */
         switch (quiz_index){
-            case 1: dispmsg = quizSearch.QuizTableSearch_1();   break;
-            case 2: dispmsg = quizSearch.QuizTableSearch_2();   break;
-            case 3: dispmsg = quizSearch.QuizTableSearch_3();   break;
-            case 4: dispmsg = quizSearch.QuizTableSearch_4();   break;
+            case 1: dispmsg = quizSearch.QuizTableSearch_1();   BgmStart(2);    break;
+            case 2: dispmsg = quizSearch.QuizTableSearch_2();   BgmStart(2);    break;
+            case 3: dispmsg = quizSearch.QuizTableSearch_3();   BgmStart(2);    break;
+            case 4: dispmsg = quizSearch.QuizTableSearch_4();   BgmStart(3);    break;
         }
 
         /*　全問終了　*/
@@ -796,14 +823,54 @@ public class MainActivity extends AppCompatActivity {
         db_quest3_rate = 100;
         */
         setScreenMain();
+    }
+    /***************************************************
+        音源処理
+     ****************************************************/
+    public void BgmStart(int index){
 
-        //音声初期化
-        /*
-        if (am == null) {
-            am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            init_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (bgm_menu == null){
+            return;
         }
-         */
+
+        if (bgm_battle == null){
+            return;
+        }
+
+        if (bgm_boss == null){
+            return;
+        }
+
+        switch (index){
+            default:
+            case 1:
+                bgm_battle.pause();
+                bgm_boss.pause();
+
+                if (bgm_menu.isPlaying() == false) {
+                    bgm_menu.setLooping(true);
+                    bgm_menu.start();
+                }
+                break;
+            case 2:
+                bgm_menu.pause();
+                bgm_boss.pause();
+
+                if (bgm_battle.isPlaying() == false) {
+                    bgm_battle.setLooping(true);
+                    bgm_battle.start();
+                }
+               break;
+            case 3:
+                bgm_menu.pause();
+                bgm_battle.pause();
+
+                if (bgm_boss.isPlaying() == false) {
+                    bgm_boss.setLooping(true);
+                    bgm_boss.start();
+                }
+                break;
+        }
     }
 
     /***************************************************
