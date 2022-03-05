@@ -65,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
     //  音源
     private AudioManager am;
     private int start_volume;
-    private MediaPlayer bgm_menu;
-    private MediaPlayer bgm_battle;
-    private MediaPlayer bgm_boss;
+    private MediaPlayer bgm;
+    private int bgm_index;
 
 
     @Override
@@ -79,10 +78,9 @@ public class MainActivity extends AppCompatActivity {
         if (am == null) {
             am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             start_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-
-            bgm_menu = (MediaPlayer) MediaPlayer.create(this, R.raw.menu);
-            bgm_battle = (MediaPlayer) MediaPlayer.create(this, R.raw.battle);
-            bgm_boss = (MediaPlayer) MediaPlayer.create(this, R.raw.boss);
+        }
+        if (bgm == null){
+            bgm = (MediaPlayer) MediaPlayer.create(this, R.raw.menu);
         }
 
         setScreenMain();
@@ -103,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         //  DB更新
         AppDBUpdated();
+
+        if (bgm != null){
+            bgm.stop();
+            bgm.release();
+            bgm = null;
+        }
     }
     @Override
     public void onDestroy(){
@@ -111,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
         AppDBUpdated();
 
         /* 音量の戻しの処理 */
+        if (bgm != null){
+            bgm.stop();
+            bgm.release();
+            bgm = null;
+        }
         if (am != null){
-
-            bgm_menu.release();        bgm_menu = null;
-            bgm_battle.release();      bgm_battle = null;
-            bgm_boss.release();        bgm_boss = null;
-
             am.setStreamVolume(AudioManager.STREAM_MUSIC, start_volume, 0);
             am = null;
         }
@@ -822,6 +826,16 @@ public class MainActivity extends AppCompatActivity {
         db_quest2_rate = 100;
         db_quest3_rate = 100;
         */
+
+        //音声初期化
+        if (am == null) {
+            am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            start_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        }
+        if (bgm == null){
+            bgm = (MediaPlayer) MediaPlayer.create(this, R.raw.menu);
+        }
+
         setScreenMain();
     }
     /***************************************************
@@ -829,48 +843,42 @@ public class MainActivity extends AppCompatActivity {
      ****************************************************/
     public void BgmStart(int index){
 
-        if (bgm_menu == null){
+        if (bgm == null){
             return;
         }
-
-        if (bgm_battle == null){
-            return;
+        else{
+            if (bgm_index != index) {
+                bgm.stop();
+                bgm.release();
+                bgm = null;
+            }
         }
-
-        if (bgm_boss == null){
-            return;
-        }
+        bgm_index = index;
 
         switch (index){
             default:
             case 1:
-                bgm_battle.pause();
-                bgm_boss.pause();
-
-                if (bgm_menu.isPlaying() == false) {
-                    bgm_menu.setLooping(true);
-                    bgm_menu.start();
+                if (bgm == null){
+                    bgm = (MediaPlayer) MediaPlayer.create(this, R.raw.menu);
                 }
                 break;
             case 2:
-                bgm_menu.pause();
-                bgm_boss.pause();
-
-                if (bgm_battle.isPlaying() == false) {
-                    bgm_battle.setLooping(true);
-                    bgm_battle.start();
+                if (bgm == null){
+                    bgm = (MediaPlayer) MediaPlayer.create(this, R.raw.battle);
                 }
                break;
             case 3:
-                bgm_menu.pause();
-                bgm_battle.pause();
-
-                if (bgm_boss.isPlaying() == false) {
-                    bgm_boss.setLooping(true);
-                    bgm_boss.start();
+                if (bgm == null){
+                    bgm = (MediaPlayer) MediaPlayer.create(this, R.raw.boss);
                 }
                 break;
         }
+
+        if (bgm.isPlaying() == false) {
+            bgm.setLooping(true);
+            bgm.start();
+        }
+
     }
 
     /***************************************************
@@ -973,11 +981,13 @@ public class MainActivity extends AppCompatActivity {
         } finally {
             db.close();
         }
+        /*
         if (ret == -1) {
             Toast.makeText(this, "Saving.... ERROR ", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Saving.... OK "+ "isopen= "+db_isopen, Toast.LENGTH_SHORT).show();
         }
+         */
     }
 
 }
