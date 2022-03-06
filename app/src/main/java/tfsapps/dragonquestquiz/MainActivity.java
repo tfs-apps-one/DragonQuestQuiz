@@ -825,7 +825,8 @@ public class MainActivity extends AppCompatActivity {
         db_quest1_rate = 100;
         db_quest2_rate = 100;
         db_quest3_rate = 100;
-        */
+
+         */
 
         //音声初期化
         if (am == null) {
