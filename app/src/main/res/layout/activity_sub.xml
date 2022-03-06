@@ -39,7 +39,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
         -->
         <TextView
-            android:id="@+id/text_status"
+            android:id="@+id/text_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -50,6 +50,23 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:text="ドラクエ１　1/20"
+            app:backgroundTint="@null"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/text_status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/bak_3"
+            android:text="正解: 8個　　　間違い:12個"
             app:backgroundTint="@null"
             android:textStyle="bold"
             />
@@ -88,7 +105,7 @@
             android:textStyle="bold"
             />
         <Button
-            android:id="@+id/text_answer2"
+            android:id="@+id/btn_answer2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -105,7 +122,7 @@
             android:textStyle="bold"
             />
         <Button
-            android:id="@+id/text_answer3"
+            android:id="@+id/btn_answer3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -123,7 +140,7 @@
             />
 
         <Button
-            android:id="@+id/text_answer4"
+            android:id="@+id/btn_answer4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -141,7 +158,7 @@
             />
 
         <Button
-            android:id="@+id/text_menu"
+            android:id="@+id/btn_menu"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -154,7 +171,7 @@
             android:onClick="onMenu"
             android:text="メニュー"
             app:backgroundTint="@null"
-            android:background="@drawable/bak_1"
+            android:background="@drawable/bak_2"
             android:textStyle="bold"
             />
 

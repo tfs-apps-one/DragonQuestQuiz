@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         app:backgroundTint="@null"
         android:background="@drawable/bak_1"
         android:layout_alignParentStart="true"
@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <!--
         <ImageButton
@@ -39,16 +39,16 @@
         -->
         <TextView
             android:id="@+id/text_title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp"
+            android:layout_weight="4"
             android:gravity="center"
             android:textColor="@color/teal_700"
-            android:text="ドラクエ１〜３クイズ"
+            android:text="クイズ【ドラクエ１】"
             android:textStyle="bold"
             android:textSize="24dp"/>
     </LinearLayout>
@@ -77,7 +77,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz1"
-            android:text="ドラクエ１"
+            android:text="ストーリー編"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -98,13 +98,14 @@
 
         <ProgressBar
             android:id="@+id/progress1"
-            style="?android:attr/progressBarStyle"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="0dp"
+            android:progressBackgroundTint="@color/white"
             android:layout_weight="2"
             />
     </LinearLayout>
@@ -133,7 +134,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz2"
-            android:text="ドラクエ２"
+            android:text="武器・呪文編"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -154,13 +155,14 @@
 
         <ProgressBar
             android:id="@+id/progress2"
-            style="?android:attr/progressBarStyle"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="0dp"
+            android:progressBackgroundTint="@color/white"
             android:layout_weight="2"
             />
     </LinearLayout>
@@ -189,7 +191,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz3"
-            android:text="ドラクエ３"
+            android:text="モンスター編"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -209,14 +211,15 @@
             />
 
         <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyle"
+            android:id="@+id/progress3"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="0dp"
+            android:progressBackgroundTint="@color/white"
             android:layout_weight="2"
             />
     </LinearLayout>
@@ -244,8 +247,8 @@
             android:layout_marginBottom="10dp"
             android:layout_weight="4"
             android:background="@drawable/bak_1"
-            android:onClick="onQuiz3"
-            android:text="難問 ランダム"
+            android:onClick="onQuiz4"
+            android:text="竜王決戦"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -265,16 +268,102 @@
             />
 
         <ProgressBar
-            android:id="@+id/progressBar4"
-            style="?android:attr/progressBarStyle"
+            android:id="@+id/progress4"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="2"
+            android:progressBackgroundTint="@color/white"
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout16"
+        android:layout_width="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_height="90dp"
+        app:backgroundTint="@null"
+        android:background="@drawable/bak_1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        android:orientation="horizontal">
+
+        <!--
+        <ImageButton
+            android:id="@+id/btn_img_onoff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="5"
+            android:background="@null"
+            android:onClick="onStartStop"
+            android:scaleType="fitCenter"
+            tools:ignore="SpeakableTextPresentCheck" />
+        -->
+        <Button
+            android:id="@+id/btn_status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:onClick="onStatus"
+            android:text="ステータス"
+            app:backgroundTint="@null"
+            android:background="@drawable/bak_2"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:onClick="onReset"
+            android:text="はじめからプレイ"
+            app:backgroundTint="@null"
+            android:background="@drawable/bak_2"
+            android:textStyle="bold"
+            />
+
+
+        <ImageButton
+            android:id="@+id/btn_treasure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:onClick="onTreasure"
+            android:src="@drawable/treasure"
+            app:backgroundTint="@null"
+            android:background="@drawable/bak_2"
+            android:textStyle="bold"
+            />
+
     </LinearLayout>
 
 
