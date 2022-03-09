@@ -24,6 +24,10 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+//広告
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.AdRequest;
+
 public class MainActivity extends AppCompatActivity {
 
     //  DB関連
@@ -67,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private int start_volume;
     private MediaPlayer bgm;
     private int bgm_index;
+    // 広告
+    private AdView mAdview;
 
 
     @Override
@@ -84,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setScreenMain();
+
+        //  広告
+        mAdview = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdview.loadAd(adRequest);
     }
     @Override
     public void onResume() {
