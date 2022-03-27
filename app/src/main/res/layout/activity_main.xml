@@ -371,9 +371,10 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
         android:gravity="center|bottom"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp">
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="10dp">
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
@@ -381,9 +382,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-4924620089567925/7074007791"></com.google.android.gms.ads.AdView>
+            ads:adUnitId="ca-app-pub-4924620089567925/4939868270">
+        </com.google.android.gms.ads.AdView>
     </LinearLayout>
 
 
