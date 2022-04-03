@@ -58,7 +58,16 @@ public class MainActivity extends AppCompatActivity {
     private int BOSSHP = 400;               //ボスのＨＰ
     private int fame;                       //名声
     final int BOSS_1_HP = 400;              //竜王のＨＰ
+    final int BOSS_2_HP = 400;              //シドーのＨＰ
+    final int BOSS_3_HP = 400;              //ゾーマのＨＰ
+    final int BOSS_4_HP = 400;              //デスピサロのＨＰ
     private int quiz_index = 0;
+    //  ゲームモード
+    final int MODE_BOSS_1 = 0;              //竜王編
+    final int MODE_BOSS_2 = 1;              //シドー編
+    final int MODE_BOSS_3 = 2;              //ゾーマ編
+    final int MODE_BOSS_4 = 3;              //デスピサロ編
+
 
     //  画面パーツ
     private ProgressBar prog1;              //
@@ -73,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     private int bgm_index;
     // 広告
     private AdView mAdview;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +145,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* 名声に応じたモード判定 */
+    /*
+        モード=0:通常シナリオモード（竜王討伐前）
+        モード=1:竜王討伐後、　シドー編　挑戦
+        モード=2:シドー討伐後、ゾーマ編　挑戦
+        モード=3=ゾーマ討伐、　デスピサロ編　挑戦
+     */
+    public int GetGameMode(){
+        if(db_boss1 < 0)   {
+            return MODE_BOSS_1;
+        }
+        else if (db_boss2 < 0){
+            return MODE_BOSS_2;
+        }
+        else if (db_boss3 < 0){
+            return MODE_BOSS_3;
+        }
+        else{
+            return MODE_BOSS_4;
+        }
+    }
+
 
 /***************************************************************************************
 
@@ -152,9 +182,18 @@ public class MainActivity extends AppCompatActivity {
 
         BgmStart(1);
 
-        if (db_boss1 <= 0){
+        //TODO: 追加コンテンツ対応
+        switch (GetGameMode()){
+            case MODE_BOSS_1:   BOSSHP = BOSS_1_HP; break;
+            case MODE_BOSS_2:   BOSSHP = BOSS_2_HP; break;
+            case MODE_BOSS_3:   BOSSHP = BOSS_3_HP; break;
+            default:            BOSSHP = BOSS_4_HP; break;
+        }
+        /*
+        if (GetGameMode() <= 0){
             BOSSHP = BOSS_1_HP;
         }
+         */
 
         setContentView(R.layout.activity_main);
 
@@ -172,8 +211,14 @@ public class MainActivity extends AppCompatActivity {
         TextView result3 = (TextView) findViewById(R.id.text_result3);
         result3.setText("経験値："+db_quest3_rate+"%");
 
+        //TODO: 追加コンテンツ対応
         TextView result4 = (TextView) findViewById(R.id.text_result4);
-        result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate));
+        switch (GetGameMode()){
+            case MODE_BOSS_1: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            case MODE_BOSS_2: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            case MODE_BOSS_3: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            default:          result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+        }
 
         /* プログレスバーの表示 */
         prog1 = (ProgressBar) findViewById(R.id.progress1);
@@ -374,13 +419,38 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //TODO: 追加コンテンツ対応
         //名声ポイント
         //竜王を倒してから
+        switch (GetGameMode()){
+            case MODE_BOSS_1:
+                str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
+                str += "　名声："+ db_fame + "\n";
+                str += "　倒したボス： 竜王 \n\n";
+                break;
+            case MODE_BOSS_2:
+                str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
+                str += "　名声："+ db_fame + "\n";
+                str += "　倒したボス： 竜王、シドー \n\n";
+                break;
+            case MODE_BOSS_3:
+                str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
+                str += "　名声："+ db_fame + "\n";
+                str += "　倒したボス： 竜王、シドー、ゾーマ\n\n";
+                break;
+            default:
+                str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
+                str += "　名声："+ db_fame + "\n";
+                str += "　倒したボス： 竜王、シドー、ゾーマ、デスピサロ\n\n";
+                break;
+        }
+        /*
         if (db_boss1 > 0){
             str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
             str += "　名声："+ db_fame + "\n";
             str += "　倒したボス： 竜王 \n\n";
         }
+         */
 
 
         vmessage.setText(str);
@@ -594,7 +664,8 @@ public class MainActivity extends AppCompatActivity {
                     boss_hp_af -= db_random_rate;
                     // ＨＰがゼロ以下の処理
                     if(boss_hp_af <= 0) {
-                        boss_hp_af = db_random_rate = BOSSHP;
+                        boss_hp_af = 0;
+//                        boss_hp_af = db_random_rate = BOSSHP;
                     }
                     break;
             }
@@ -632,8 +703,9 @@ public class MainActivity extends AppCompatActivity {
             // ラスボスの処理
             else{
                 guide.setIcon(R.drawable.boss);
-                if (boss_hp_af >= boss_hp_bf){
-                    mess += "\n\n";
+                if (boss_hp_af >= boss_hp_bf && boss_hp_af != BOSSHP){
+                    //if (boss_hp_af >= boss_hp_bf && boss_hp_af != BOSSHP){
+                        mess += "\n\n";
                     mess += " 勇者の一撃は竜王に回避された!!\n";
                     mess += "\n";
                     mess += "竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
@@ -830,14 +902,12 @@ public class MainActivity extends AppCompatActivity {
 
         BOSSHP = BOSS_1_HP; //ボスのＨＰをセット
 
-        //test
-        /*
+// test
         db_user_level = 30;
         db_quest1_rate = 100;
         db_quest2_rate = 100;
         db_quest3_rate = 100;
-
-         */
+        db_random_rate = BOSS_1_HP-10;
 
         //音声初期化
         if (am == null) {
