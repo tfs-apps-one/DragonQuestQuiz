@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private int BOSSHP = 400;               //ボスのＨＰ
     private int fame;                       //名声
     final int BOSS_1_HP = 400;              //竜王のＨＰ
-    final int BOSS_2_HP = 400;              //シドーのＨＰ
+    final int BOSS_2_HP = 600;              //シドーのＨＰ
     final int BOSS_3_HP = 400;              //ゾーマのＨＰ
     final int BOSS_4_HP = 400;              //デスピサロのＨＰ
     private int quiz_index = 0;
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         TextView result4 = (TextView) findViewById(R.id.text_result4);
         switch (GetGameMode()){
             case MODE_BOSS_1: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
-            case MODE_BOSS_2: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            case MODE_BOSS_2: result4.setText("シドー残りＨＰ："+(BOSSHP-db_random_rate)); break;
             case MODE_BOSS_3: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
             default:          result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
         }
@@ -305,7 +305,14 @@ public class MainActivity extends AppCompatActivity {
             guide.show();
         }
         else{
-            quiz_index = 4;
+            //TODO: 追加コンテンツ対応
+            switch (GetGameMode()){
+                case MODE_BOSS_1:   quiz_index = 4; break;
+                case MODE_BOSS_2:   quiz_index = 5; break;
+                case MODE_BOSS_3:   quiz_index = 6; break;
+                default:            quiz_index = 7; break;
+            }
+            //quiz_index = 4;
             setScreenSub();
         }
     }
