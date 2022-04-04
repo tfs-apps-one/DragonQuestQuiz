@@ -552,7 +552,7 @@ public class MainActivity extends AppCompatActivity {
         vmessage.setTextColor(Color.WHITE);
         vmessage.setTextSize(16);
         guide.setTitle("準備中");
-        guide.setIcon(R.drawable.dq96x96);
+        guide.setIcon(R.drawable.dq128x128);
         guide.setView(vmessage);
         guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
             @Override
