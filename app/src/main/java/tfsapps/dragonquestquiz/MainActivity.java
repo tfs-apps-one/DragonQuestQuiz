@@ -153,16 +153,16 @@ public class MainActivity extends AppCompatActivity {
         モード=3=ゾーマ討伐、　デスピサロ編　挑戦
      */
     public int GetGameMode(){
-        if(db_boss1 < 0)   {
+        if(db_boss1 <= 0)   {
             return MODE_BOSS_1;
         }
-        else if (db_boss2 < 0){
+        else if (db_boss2 <= 0){
             return MODE_BOSS_2;
         }
-        else if (db_boss3 < 0){
+        else if (db_boss3 <= 0){
             return MODE_BOSS_3;
         }
-        else{
+        else {
             return MODE_BOSS_4;
         }
     }
@@ -184,10 +184,13 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: 追加コンテンツ対応
         switch (GetGameMode()){
+            default:   BOSSHP = BOSS_1_HP; break;
+            /*
             case MODE_BOSS_1:   BOSSHP = BOSS_1_HP; break;
             case MODE_BOSS_2:   BOSSHP = BOSS_2_HP; break;
             case MODE_BOSS_3:   BOSSHP = BOSS_3_HP; break;
             default:            BOSSHP = BOSS_4_HP; break;
+             */
         }
         /*
         if (GetGameMode() <= 0){
@@ -214,10 +217,13 @@ public class MainActivity extends AppCompatActivity {
         //TODO: 追加コンテンツ対応
         TextView result4 = (TextView) findViewById(R.id.text_result4);
         switch (GetGameMode()){
+            default: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            /*
             case MODE_BOSS_1: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
             case MODE_BOSS_2: result4.setText("シドー残りＨＰ："+(BOSSHP-db_random_rate)); break;
-            case MODE_BOSS_3: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
-            default:          result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            case MODE_BOSS_3: result4.setText("ゾーマＨＰ："+(BOSSHP-db_random_rate)); break;
+            default:          result4.setText("デスピサロＨＰ："+(BOSSHP-db_random_rate)); break;
+             */
         }
 
         /* プログレスバーの表示 */
@@ -307,10 +313,14 @@ public class MainActivity extends AppCompatActivity {
         else{
             //TODO: 追加コンテンツ対応
             switch (GetGameMode()){
+                default:   quiz_index = 4; break;
+                /*
                 case MODE_BOSS_1:   quiz_index = 4; break;
                 case MODE_BOSS_2:   quiz_index = 5; break;
                 case MODE_BOSS_3:   quiz_index = 6; break;
                 default:            quiz_index = 7; break;
+
+                 */
             }
             //quiz_index = 4;
             setScreenSub();
@@ -429,27 +439,27 @@ public class MainActivity extends AppCompatActivity {
         //TODO: 追加コンテンツ対応
         //名声ポイント
         //竜王を倒してから
-        switch (GetGameMode()){
-            case MODE_BOSS_1:
+        if (db_boss1 > 0) {
+            if (db_boss2 <= 0) {
                 str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
-                str += "　名声："+ db_fame + "\n";
+                str += "　名声：" + db_fame + "\n";
                 str += "　倒したボス： 竜王 \n\n";
-                break;
-            case MODE_BOSS_2:
+            }
+            else if (db_boss3 <= 0) {
                 str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
-                str += "　名声："+ db_fame + "\n";
+                str += "　名声：" + db_fame + "\n";
                 str += "　倒したボス： 竜王、シドー \n\n";
-                break;
-            case MODE_BOSS_3:
+            }
+            else if (db_boss4 <= 0) {
                 str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
-                str += "　名声："+ db_fame + "\n";
+                str += "　名声：" + db_fame + "\n";
                 str += "　倒したボス： 竜王、シドー、ゾーマ\n\n";
-                break;
-            default:
+            }
+            else {
                 str += " 〜〜〜〜〜〜〜〜〜〜〜〜\n";
-                str += "　名声："+ db_fame + "\n";
-                str += "　倒したボス： 竜王、シドー、ゾーマ、デスピサロ\n\n";
-                break;
+                str += "　名声：" + db_fame + "\n";
+                str += "　倒したボス： 竜王、シドー、ゾーマ\n　　　　　　　　デスピサロ\n\n";
+            }
         }
         /*
         if (db_boss1 > 0){
@@ -910,12 +920,13 @@ public class MainActivity extends AppCompatActivity {
         BOSSHP = BOSS_1_HP; //ボスのＨＰをセット
 
 // test
+        /*
         db_user_level = 30;
         db_quest1_rate = 100;
         db_quest2_rate = 100;
         db_quest3_rate = 100;
         db_random_rate = BOSS_1_HP-10;
-
+*/
         //音声初期化
         if (am == null) {
             am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
