@@ -11,12 +11,14 @@ public class QuizSearch {
     private List<ListData> Quiz_List_2 = new ArrayList<ListData>();
     private List<ListData> Quiz_List_3 = new ArrayList<ListData>();
     private List<ListData> Quiz_List_4 = new ArrayList<ListData>();
+    private List<ListData> Quiz_List_5 = new ArrayList<ListData>();
     private final Random rand = new Random(System.currentTimeMillis());
     static public ListData nowquiz;
     static private int series_1;
     static private int series_2;
     static private int series_3;
     static private int series_4;
+    static private int series_5;
 
     //コンストラクタ
     public QuizSearch(CsvReader csvreader) {
@@ -34,6 +36,7 @@ public class QuizSearch {
                 case 2: series_2++; Quiz_List_2.add(temp);  break;
                 case 3: series_3++; Quiz_List_3.add(temp);  break;
                 case 4: series_4++; Quiz_List_4.add(temp);  break;
+                case 5: series_4++; Quiz_List_5.add(temp);  break;
                 default:break;
             }
             Quiz_List.add(temp);
@@ -181,6 +184,41 @@ public class QuizSearch {
             else {
                 Quiz_List_4.get(j).isAlive = false;
                 nowquiz = Quiz_List_4.get(j);
+                return nowquiz;
+            }
+        }
+        //本当になにもなければNULLを返す
+        return null;
+    }
+    public ListData QuizTableSearch_5()
+    {
+        int index1 = 0;
+        int i;
+        int j;
+        for(i=0;i<Quiz_List_5.size();i++)
+        {
+            index1 = rand.nextInt(Quiz_List_5.size());
+
+            //検索済みのクイズ（すでに表示済み）
+            if (Quiz_List_5.get(index1).isAlive == false) {
+                continue;
+            }
+            //初ヒットしたクイズ
+            else {
+                Quiz_List_5.get(index1).isAlive = false;
+                nowquiz = Quiz_List_5.get(index1);
+                return nowquiz;
+            }
+        }
+        //ランダム検索でヒットしなかったクイズをもう一度全件サーチする
+        for (j=0; j<Quiz_List_5.size(); j++)
+        {
+            if(Quiz_List_5.get(j).isAlive == false) {
+                continue;
+            }
+            else {
+                Quiz_List_5.get(j).isAlive = false;
+                nowquiz = Quiz_List_5.get(j);
                 return nowquiz;
             }
         }

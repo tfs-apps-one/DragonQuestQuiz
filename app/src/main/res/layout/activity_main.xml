@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff999999"
@@ -368,7 +368,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
+        android:id="@+id/linearLayout19"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
@@ -386,6 +386,14 @@
             ads:adUnitId="ca-app-pub-4924620089567925/4939868270">
         </com.google.android.gms.ads.AdView>
     </LinearLayout>
+
+    <!--テスト：
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    -->
+    <!--本物
+        ads:adUnitId="ca-app-pub-4924620089567925/4939868270">
+        </com.google.android.gms.ads.AdView>
+        -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

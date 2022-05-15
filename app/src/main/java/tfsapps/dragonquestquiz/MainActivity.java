@@ -25,9 +25,21 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 //広告
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+//import com.google.android.gms.ads.reward.RewardItem;
+//import com.google.android.gms.ads.reward.RewardedVideoAd;
+//import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
+//public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener {
 public class MainActivity extends AppCompatActivity {
 
     //  DB関連
@@ -82,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
     private int bgm_index;
     // 広告
     private AdView mAdview;
+    private boolean isAdLoad = false;
+//    private RewardedVideoAd mRewardedVideoAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +117,56 @@ public class MainActivity extends AppCompatActivity {
         mAdview = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdview.loadAd(adRequest);
+
+        /*
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdview = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdview.loadAd(adRequest);
+        mAdview.setAdListener(new AdListener() {
+        @Override
+        public void onAdLoaded() {
+            // Code to be executed when an ad finishes loading.
+        }
+
+        @Override
+        public void onAdFailedToLoad(LoadAdError adError) {
+            int err = adError.getCode();
+            String string = adError.getMessage();
+
+            // Code to be executed when an ad request fails.
+
+        }
+
+        @Override
+        public void onAdOpened() {
+            // Code to be executed when an ad opens an overlay that
+            // covers the screen.
+        }
+
+        @Override
+        public void onAdClicked() {
+            // Code to be executed when the user clicks on an ad.
+        }
+
+        @Override
+        public void onAdClosed() {
+            // Code to be executed when the user is about to return
+            // to the app after tapping on an ad.
+        }
+    });
+    */
+        /*
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        // Use an activity context to get the rewarded video instance.
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
+         */
     }
     @Override
     public void onResume() {
@@ -247,6 +311,21 @@ public class MainActivity extends AppCompatActivity {
         prog4.setMax(BOSSHP);
         prog4.setProgress(db_random_rate);
 
+        //  広告
+        if (isAdLoad == false) {
+            /*
+            MobileAds.initialize(this, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                }
+            });
+            mAdview = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdview.loadAd(adRequest);
+
+             */
+            isAdLoad = true;
+        }
 
 /*
         Button sendButton = findViewById(R.id.send_button);
@@ -260,6 +339,55 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(v -> setScreenSub());
 */
     }
+    /*
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+                new AdRequest.Builder().build());
+    }
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
+        // Reward the user.
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        Toast.makeText(this, "onRewardedVideoAdLeftApplication",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+        Toast.makeText(this, "onRewardedVideoAdFailedToLoad err="+errorCode, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+        Toast.makeText(this, "onRewardedVideoCompleted", Toast.LENGTH_SHORT).show();
+    }
+*/
 
     /***********************************************
         各種ボタン処理（メイン画面）
@@ -554,6 +682,12 @@ public class MainActivity extends AppCompatActivity {
         guide.show();
     }
     public void onTreasure(View view){
+/*
+        if (mRewardedVideoAd.isLoaded()) {
+            mRewardedVideoAd.show();
+        }
+
+ */
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
         //メッセージ
@@ -722,7 +856,7 @@ public class MainActivity extends AppCompatActivity {
                 guide.setIcon(R.drawable.boss);
                 if (boss_hp_af >= boss_hp_bf && boss_hp_af != BOSSHP){
                     //if (boss_hp_af >= boss_hp_bf && boss_hp_af != BOSSHP){
-                        mess += "\n\n";
+                    mess += "\n\n";
                     mess += " 勇者の一撃は竜王に回避された!!\n";
                     mess += "\n";
                     mess += "竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
@@ -779,6 +913,7 @@ public class MainActivity extends AppCompatActivity {
             case 2: dispmsg = quizSearch.QuizTableSearch_2();   BgmStart(2);    break;
             case 3: dispmsg = quizSearch.QuizTableSearch_3();   BgmStart(2);    break;
             case 4: dispmsg = quizSearch.QuizTableSearch_4();   BgmStart(3);    break;
+            case 5: dispmsg = quizSearch.QuizTableSearch_5();   BgmStart(3);    break;
         }
 
         /*　全問終了　*/
