@@ -34,13 +34,13 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
-//import com.google.android.gms.ads.reward.RewardItem;
-//import com.google.android.gms.ads.reward.RewardedVideoAd;
-//import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
-//public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener {
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener {
+//public class MainActivity extends AppCompatActivity {
 
     //  DB関連
     private MyOpenHelper helper;            //DBアクセス
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private int BOSSHP = 400;               //ボスのＨＰ
     private int fame;                       //名声
     final int BOSS_1_HP = 400;              //竜王のＨＰ
-    final int BOSS_2_HP = 600;              //シドーのＨＰ
+    final int BOSS_2_HP = 990;              //シドーのＨＰ
     final int BOSS_3_HP = 400;              //ゾーマのＨＰ
     final int BOSS_4_HP = 400;              //デスピサロのＨＰ
     private int quiz_index = 0;
@@ -95,7 +95,12 @@ public class MainActivity extends AppCompatActivity {
     // 広告
     private AdView mAdview;
     private boolean isAdLoad = false;
-//    private RewardedVideoAd mRewardedVideoAd;
+    private RewardedVideoAd mRewardedVideoAd;
+
+    // テストID
+    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+    // テストID(APPは本物でOK)
+    private static final String APP_ID = "ca-app-pub-4924620089567925~2701724509";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +172,12 @@ public class MainActivity extends AppCompatActivity {
         mRewardedVideoAd.setRewardedVideoAdListener(this);
         loadRewardedVideoAd();
          */
+
+        // リワード広告
+        MobileAds.initialize(this, APP_ID);
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
     }
     @Override
     public void onResume() {
@@ -248,13 +259,12 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: 追加コンテンツ対応
         switch (GetGameMode()){
-            default:   BOSSHP = BOSS_1_HP; break;
-            /*
-            case MODE_BOSS_1:   BOSSHP = BOSS_1_HP; break;
+//            default:   BOSSHP = BOSS_1_HP; break;
+
+            default:            BOSSHP = BOSS_1_HP; break;
             case MODE_BOSS_2:   BOSSHP = BOSS_2_HP; break;
-            case MODE_BOSS_3:   BOSSHP = BOSS_3_HP; break;
-            default:            BOSSHP = BOSS_4_HP; break;
-             */
+//          case MODE_BOSS_3:   BOSSHP = BOSS_3_HP; break;
+//          default:            BOSSHP = BOSS_4_HP; break;
         }
         /*
         if (GetGameMode() <= 0){
@@ -281,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
         //TODO: 追加コンテンツ対応
         TextView result4 = (TextView) findViewById(R.id.text_result4);
         switch (GetGameMode()){
-            default: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
+            default:            result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate));     break;
+            case MODE_BOSS_2:   result4.setText("シドー残りＨＰ："+(BOSSHP-db_random_rate));    break;
             /*
             case MODE_BOSS_1: result4.setText("竜王残りＨＰ："+(BOSSHP-db_random_rate)); break;
             case MODE_BOSS_2: result4.setText("シドー残りＨＰ："+(BOSSHP-db_random_rate)); break;
@@ -339,7 +350,6 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(v -> setScreenSub());
 */
     }
-    /*
     private void loadRewardedVideoAd() {
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
                 new AdRequest.Builder().build());
@@ -347,9 +357,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRewarded(RewardItem reward) {
-        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
-                reward.getAmount(), Toast.LENGTH_SHORT).show();
         // Reward the user.
+
+        //ユーザーレベルアップ
+        AppDBUpdated();
     }
 
     @Override
@@ -387,7 +398,6 @@ public class MainActivity extends AppCompatActivity {
     public void onRewardedVideoCompleted() {
         Toast.makeText(this, "onRewardedVideoCompleted", Toast.LENGTH_SHORT).show();
     }
-*/
 
     /***********************************************
         各種ボタン処理（メイン画面）
@@ -441,7 +451,8 @@ public class MainActivity extends AppCompatActivity {
         else{
             //TODO: 追加コンテンツ対応
             switch (GetGameMode()){
-                default:   quiz_index = 4; break;
+                default:            quiz_index = 4; break;
+                case MODE_BOSS_2:   quiz_index = 5; break;
                 /*
                 case MODE_BOSS_1:   quiz_index = 4; break;
                 case MODE_BOSS_2:   quiz_index = 5; break;
@@ -690,20 +701,54 @@ public class MainActivity extends AppCompatActivity {
  */
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
-        //メッセージ
-        vmessage.setText("\n\n ただいま準備中です・・・\n\n 今後の追加配信をご期待ください\n\n\n\n\n\n");
-        vmessage.setBackgroundColor(Color.DKGRAY);
-        vmessage.setTextColor(Color.WHITE);
-        vmessage.setTextSize(16);
-        guide.setTitle("準備中");
-        guide.setIcon(R.drawable.dq128x128);
-        guide.setView(vmessage);
-        guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setScreenMain();
-            }
-        });
+
+        if (db_boss1 <= 0) {
+            //メッセージ
+            vmessage.setText("\n\n 竜王を倒してから挑戦可能です・・・\n\n さらなる強敵が待つ！！\n\n\n\n\n\n");
+            vmessage.setBackgroundColor(Color.DKGRAY);
+            vmessage.setTextColor(Color.WHITE);
+            vmessage.setTextSize(16);
+            guide.setTitle("追加コンテンツ");
+            guide.setIcon(R.drawable.dq128x128);
+            guide.setView(vmessage);
+            guide.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setScreenMain();
+                }
+            });
+        }
+        else {
+            //メッセージ
+            vmessage.setText("\n\n 動画を視聴して名声を上げよう！！\n 名声を上げて強力な武器をGETしよう♪\n\n" +
+                    " 現在の名声："+db_fame+"　=>　視聴後の名声："+(db_fame+5)+ "\n\n"+
+                    " [名声 11以上] ロト装備・改 \n" +
+                    " [名声 31以上] ロト装備・真 \n" +
+                    " [名声 51以上] ロト装備・神 \n" +
+                    " [名声 71以上] ロト装備・極 \n" +
+                    "\n\n");
+            vmessage.setBackgroundColor(Color.DKGRAY);
+            vmessage.setTextColor(Color.WHITE);
+            vmessage.setTextSize(16);
+            guide.setTitle("追加コンテンツ");
+            guide.setIcon(R.drawable.dq128x128);
+            guide.setView(vmessage);
+
+            guide.setPositiveButton("視聴", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO リワード処理　MAX名声90
+                    db_fame += 20;
+                    setScreenMain();
+                }
+            });
+            guide.setNegativeButton("中止", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setScreenMain();
+                }
+            });
+        }
         guide.create();
         guide.show();
     }
@@ -727,11 +772,12 @@ public class MainActivity extends AppCompatActivity {
         if (BOSSHP <= db_random_rate){
             db_fame = 10;
             db_boss1 = 1;
+            db_user_level = 30;
             db_random_rate = 0;
 
             //メッセージ
             str += "\n\n";
-            str += " 勇者は竜王を倒した！！\n\n";
+            str += " 勇者はBOSSを倒した！！\n\n";
             str += " 名声が [ "+ db_fame + " ] になりました\n\n";
             str += " 名声を上げて\n";
             str += " さらなる強敵に挑戦しよう\n";
@@ -809,7 +855,7 @@ public class MainActivity extends AppCompatActivity {
                     if (db_quest3_rate <= temp_rate)    db_quest3_rate = temp_rate;
                     break;
                 // ラスボスだけは別処理
-                case 4:
+                default:
                     boss_hp_bf -= db_random_rate;
                     db_random_rate += boss_damage_calcurate(temp_rate);
                     boss_hp_af -= db_random_rate;
@@ -857,25 +903,32 @@ public class MainActivity extends AppCompatActivity {
                 if (boss_hp_af >= boss_hp_bf && boss_hp_af != BOSSHP){
                     //if (boss_hp_af >= boss_hp_bf && boss_hp_af != BOSSHP){
                     mess += "\n\n";
-                    mess += " 勇者の一撃は竜王に回避された!!\n";
+                    mess += " 勇者の一撃は回避された!!\n";
                     mess += "\n";
-                    mess += "竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
+                    mess += "BOSS　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
                     mess += "\n\n";
                     mess += "　(残ＨＰ→ゼロ　ゲームクリア）\n";
                     mess += "\n\n";
 //                  vmessage.setText("\n\n 勇者の一撃は竜王に回避された!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア）\n\n\n\n");
-                    imageView.setImageResource(R.drawable.boss1);
+                    switch (GetGameMode()){
+                        default:            imageView.setImageResource(R.drawable.boss1);   break;
+                        case MODE_BOSS_2:   imageView.setImageResource(R.drawable.boss21);   break;
+                    }
                 }
                 else {
                     mess += "\n\n";
-                    mess += " 勇者の一撃が竜王に直撃した!!\n";
+                    mess += " 勇者の一撃が直撃した!!\n";
                     mess += "\n";
-                    mess += "竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
+                    mess += "BOSS　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n";
                     mess += "\n\n";
                     mess += "　(残ＨＰ→ゼロ　ゲームクリア）\n";
                     mess += "\n\n";
 //                  vmessage.setText("\n\n 勇者の一撃が竜王に直撃した!!\n\n  竜王　残ＨＰ" + boss_hp_bf + " → " + boss_hp_af + "\n\n\n　(残ＨＰゼロ＝GAMEクリア)\n\n\n\n");
-                    imageView.setImageResource(R.drawable.boss2);
+                    switch (GetGameMode()){
+                        default:            imageView.setImageResource(R.drawable.boss2);   break;
+                        case MODE_BOSS_2:   imageView.setImageResource(R.drawable.boss22);   break;
+                    }
+
                 }
                 vmessage.setBackgroundColor(Color.DKGRAY);
                 vmessage.setTextColor(Color.WHITE);
@@ -1055,13 +1108,12 @@ public class MainActivity extends AppCompatActivity {
         BOSSHP = BOSS_1_HP; //ボスのＨＰをセット
 
 // test
-        /*
         db_user_level = 30;
         db_quest1_rate = 100;
         db_quest2_rate = 100;
         db_quest3_rate = 100;
         db_random_rate = BOSS_1_HP-10;
-*/
+
         //音声初期化
         if (am == null) {
             am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);

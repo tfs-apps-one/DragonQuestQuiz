@@ -19,7 +19,7 @@
             android:value="ca-app-pub-4924620089567925~2765746055" />
         <!--
             本物のID
-           android:value="ca-app-pub-4924620089567925~2765746055" />
+               android:value="ca-app-pub-4924620089567925~2765746055" />
         -->
         <activity
             android:name=".MainActivity"
