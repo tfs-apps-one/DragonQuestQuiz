@@ -249,7 +249,7 @@
             android:layout_weight="4"
             android:background="@drawable/bak_1"
             android:onClick="onQuiz4"
-            android:text="竜王決戦"
+            android:text="BOSS決戦"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
