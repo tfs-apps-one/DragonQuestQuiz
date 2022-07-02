@@ -99,8 +99,11 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
 
     // テストID
     private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+    // 本物ID
+//    private static final String AD_UNIT_ID = "ca-app-pub-4924620089567925/3397937263";
+
     // テストID(APPは本物でOK)
-    private static final String APP_ID = "ca-app-pub-4924620089567925~2701724509";
+    private static final String APP_ID = "ca-app-pub-4924620089567925~2765746055";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,62 +126,13 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdview.loadAd(adRequest);
 
-        /*
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        mAdview = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdview.loadAd(adRequest);
-        mAdview.setAdListener(new AdListener() {
-        @Override
-        public void onAdLoaded() {
-            // Code to be executed when an ad finishes loading.
-        }
-
-        @Override
-        public void onAdFailedToLoad(LoadAdError adError) {
-            int err = adError.getCode();
-            String string = adError.getMessage();
-
-            // Code to be executed when an ad request fails.
-
-        }
-
-        @Override
-        public void onAdOpened() {
-            // Code to be executed when an ad opens an overlay that
-            // covers the screen.
-        }
-
-        @Override
-        public void onAdClicked() {
-            // Code to be executed when the user clicks on an ad.
-        }
-
-        @Override
-        public void onAdClosed() {
-            // Code to be executed when the user is about to return
-            // to the app after tapping on an ad.
-        }
-    });
-    */
-        /*
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
-        // Use an activity context to get the rewarded video instance.
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-        loadRewardedVideoAd();
-         */
-
         // リワード広告
         MobileAds.initialize(this, APP_ID);
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
         loadRewardedVideoAd();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -321,82 +275,63 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
         prog4.setMin(0);
         prog4.setMax(BOSSHP);
         prog4.setProgress(db_random_rate);
-
-        //  広告
-        if (isAdLoad == false) {
-            /*
-            MobileAds.initialize(this, new OnInitializationCompleteListener() {
-                @Override
-                public void onInitializationComplete(InitializationStatus initializationStatus) {
-                }
-            });
-            mAdview = findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdview.loadAd(adRequest);
-
-             */
-            isAdLoad = true;
-        }
-
-/*
-        Button sendButton = findViewById(R.id.send_button);
-//        sendButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                setScreenSub();
-//            }
-//        });
-        // lambda式
-        sendButton.setOnClickListener(v -> setScreenSub());
-*/
     }
+
+    /**
+     リワード広告処理
+     */
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                new AdRequest.Builder().build());
+        mRewardedVideoAd.loadAd(AD_UNIT_ID,new AdRequest.Builder().build());
     }
 
     @Override
     public void onRewarded(RewardItem reward) {
         // Reward the user.
+        int temp = db_fame;
+        db_fame = db_fame + 5;
 
+        if (db_fame > 90) {
+            db_fame = 90;
+        }
+        Toast.makeText(this, "名声：" + temp + " ==> "+db_fame, Toast.LENGTH_SHORT).show();
         //ユーザーレベルアップ
         AppDBUpdated();
     }
 
     @Override
     public void onRewardedVideoAdLeftApplication() {
-        Toast.makeText(this, "onRewardedVideoAdLeftApplication",
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onRewardedVideoAdLeftApplication", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
-        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        Toast.makeText(this, "onRewardedVideoAdFailedToLoad err="+errorCode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "報酬動画の準備エラー ERR="+errorCode, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
-        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "報酬動画の準備完了", Toast.LENGTH_SHORT).show();
+//      Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdOpened() {
-        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoStarted() {
-        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoCompleted() {
-        Toast.makeText(this, "onRewardedVideoCompleted", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onRewardedVideoCompleted", Toast.LENGTH_SHORT).show();
     }
 
     /***********************************************
@@ -562,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
                 str += "\n";
                 str += "　効果：ボスダメージ2.0倍\n\n";
             }
-            else if (db_fame <= 90) {
+            else if (db_fame <= 999) {
                 str += "\n";
                 str += "　Lv " + db_user_level + "　称号：極めし者\n";
                 str += "\n";
@@ -693,12 +628,6 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
         guide.show();
     }
     public void onTreasure(View view){
-/*
-        if (mRewardedVideoAd.isLoaded()) {
-            mRewardedVideoAd.show();
-        }
-
- */
         AlertDialog.Builder guide = new AlertDialog.Builder(this);
         TextView vmessage = new TextView(this);
 
@@ -738,8 +667,14 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // TODO リワード処理　MAX名声90
+                    if (mRewardedVideoAd.isLoaded()) {
+                        mRewardedVideoAd.show();
+                    }
+/*test*/
+                    /*
                     db_fame += 20;
                     setScreenMain();
+                     */
                 }
             });
             guide.setNegativeButton("中止", new DialogInterface.OnClickListener() {
@@ -806,14 +741,30 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     }
 
     /***********************************************
-     画面表示処理（ボス討伐後）
+        画面表示処理（ボス討伐後）
+        ダメージ補正処理
      ***********************************************/
     public int  boss_damage_calcurate(int damage){
         int result = damage;
+        int add_damage = 150;
+
+        if (db_fame > 10 && db_fame <= 30){
+            add_damage = 160;
+        }
+        else if (db_fame <= 50){
+            add_damage = 180;
+        }
+        else if (db_fame <= 70){
+            add_damage = 200;
+        }
+        else if (db_fame <= 90){
+            add_damage = 500;
+        }
+
 
         // ロト装備で1.5倍
         if (db_user_level >= 30){
-            result = damage * 150;
+            result = damage * add_damage;
             result /= 100;
         }
 
@@ -1108,11 +1059,13 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
         BOSSHP = BOSS_1_HP; //ボスのＨＰをセット
 
 // test
+        /*
         db_user_level = 30;
         db_quest1_rate = 100;
         db_quest2_rate = 100;
         db_quest3_rate = 100;
         db_random_rate = BOSS_1_HP-10;
+         */
 
         //音声初期化
         if (am == null) {
