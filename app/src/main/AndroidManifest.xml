@@ -17,10 +17,7 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4924620089567925~2765746055" />
-        <!--
-            本物のID
-               android:value="ca-app-pub-4924620089567925~2765746055" />
-        -->
+        
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
