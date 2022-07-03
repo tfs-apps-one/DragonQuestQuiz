@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     private RewardedVideoAd mRewardedVideoAd;
 
     // テストID
-    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+//    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
     // 本物ID
-//    private static final String AD_UNIT_ID = "ca-app-pub-4924620089567925/3397937263";
+    private static final String AD_UNIT_ID = "ca-app-pub-4924620089567925/3397937263";
 
     // テストID(APPは本物でOK)
     private static final String APP_ID = "ca-app-pub-4924620089567925~2765746055";
